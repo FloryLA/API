@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/proyectos', 'ProjectController@index');
+
 Route::resource('proyectos', 'ProjectController');
-Route::resource('proyectos.categorias', 'CategoryController');
+Route::resource('categorias', 'CategoryController',['only'=>['index','show']]);
+Route::resource('proyectos.categorias', 'ProjectCategoryController',['except'=>['show']]);
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
