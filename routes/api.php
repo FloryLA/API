@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/proyectos', 'ProjectController@index');
-Route::resource('categorias', 'CategoryController');
 Route::resource('proyectos', 'ProjectController');
+Route::resource('proyectos.categorias', 'CategoryController');
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

@@ -26,7 +26,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return 'Mostrar menu para crear  poryectos  ';
     }
 
     /**
@@ -46,9 +46,9 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show($id)
     {
-        //
+        return 'Mostrar proyecto con id '.$id;
     }
 
     /**
@@ -59,7 +59,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return 'Mostrar formulario para editar proyecto  con id '.$id;
     }
 
     /**
@@ -71,7 +71,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        return 'Mostrar formulario para modificar proyecto  con id '.$id;
     }
 
     /**
@@ -82,6 +82,6 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        return 'Mostrar formulario para eliminar proyecto  con id '.$id;
     }
 }

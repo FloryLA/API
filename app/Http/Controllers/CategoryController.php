@@ -12,9 +12,9 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        return 'Mostrar las categorias '.$id;
     }
 
     /**
@@ -24,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return 'Mostrar formulario para crear una categoria'.$id;
     }
 
     /**
@@ -44,9 +44,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($idproject, $idcategory)
     {
-        //
+        return "Mostrando la categoria". $idcategory.'del proyecto'.$idproject;
     }
 
     /**
@@ -55,9 +55,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($idproject, $idcategory)
     {
-        //
+        return 'Mostrar formulario para editar una categoria'.$idcategory.' del proyecto '.$idproject;
     }
 
     /**
@@ -67,9 +67,10 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update($idproject,  $idcategoryidcategory)
     {
-        //
+        return 'Mostrar formulario para actualizar una categoria'.$idcategory.' del proyecto '.$idproject;
+ 
     }
 
     /**
