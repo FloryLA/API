@@ -15,8 +15,8 @@ class ProjectController extends Controller
     public function index()
     {
         $project=Project::all();
-        return 'Mostrar la lista de todos los poryectos  ' . $project;
-   
+        //return 'Mostrar la lista de todos los poryectos  ' . $project;
+        return response()->json(['Acceso a Proyectos'=>$project],202);
     }
 
     /**
@@ -48,7 +48,12 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        return 'Mostrar proyecto con id '.$id;
+        $project=Project::find($id);
+        //return 'Mostrar la lista de todos los poryectos  ' . $project;
+        if(!$project){
+            return response()->json(['mensaje '=>'No se encontro el proyecto','codigo'=>404],404);
+        }
+        return response()->json(['Acceso a Proyectos'=>$project],202);
     }
 
     /**

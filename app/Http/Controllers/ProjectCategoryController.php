@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Project;
+//use App\Category;
 use Illuminate\Http\Request;
 
 class ProjectCategoryController extends Controller
@@ -14,7 +15,13 @@ class ProjectCategoryController extends Controller
      */
     public function index($id)
     {
-        return 'Mostrar las categorias '.$id;
+        $project=Project::find($id);
+        $category=$project->categories;
+        if(!$project){
+            return response()->json(['mensaje '=>'No se encontro el proyecto','codigo'=>404],404);
+        }
+        return response()->json(['Acceso a categorias'=>$category],202);
+        
     }
 
     /**
