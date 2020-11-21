@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+public function __construct()
+{
+    $this->middleware('auth.basic',['only'=>['store','update','destroy']]);
+}
+
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +43,13 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         if(!$request->get('Nombre') || !$request('Descripcion'))
+       {
+        return response()->json(['mensaje'=>'faltan datos','codigo'=>422],422);
+       }
+       Project::create($request->all());
+      
+        return response()->json(['mensaje'=>'Proyecto Creado'],202);
     }
 
     /**

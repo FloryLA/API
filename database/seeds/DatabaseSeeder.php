@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use App\user;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -11,8 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {   
+        
         $this->call(ProjectSeeder::class);
         $this->call(CategorySeeder::class);
-        
+        User::truncate();
+        $this->call(UserSeeder::class);
     }
 }
