@@ -43,8 +43,7 @@ public function __construct()
      */
     public function store(Request $request)
     {
-         if(!$request->get('Nombre') || !$request('Descripcion'))
-       {
+         if(!$request->get('Nombre') || !$request->get('Descripcion')){
         return response()->json(['mensaje'=>'faltan datos','codigo'=>422],422);
        }
        Project::create($request->all());

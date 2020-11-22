@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
-//use App\Category;
+use App\Category;
 use Illuminate\Http\Request;
 
 class ProjectCategoryController extends Controller
@@ -23,7 +23,7 @@ class ProjectCategoryController extends Controller
         return response()->json(['Acceso a categorias'=>$category],202);
         
     }
-
+   
     /**
      * Show the form for creating a new resource.
      *
@@ -40,11 +40,25 @@ class ProjectCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
-    }
+        if( !$request->get('Nombre') || !$request->get('Descripcion')){
+            return response()->json(['mensaje'=>'Faltan ','codigo'=>422],422);
+           }
 
+         $project=Project::find($id);
+        if (!$project) {
+            return response()->json(['mensaje'=>'Proyecto no existe','codigo'=>404],404);
+          }
+
+        Category::create([
+            'Nombre'=>$request->get('Nombre'),
+            'Descripcion'=>$request->get('Descripcion'),
+            'project_id'=>$id
+            ]);
+
+        return response()->json(['mensaje'=>'Categoria Creado'],201);
+    }
     /**
      * Display the specified resource.
      *
@@ -53,6 +67,7 @@ class ProjectCategoryController extends Controller
      */
     public function show($idproject, $idcategory)
     {
+        
         return "Mostrando la categoria". $idcategory.'del proyecto'.$idproject;
     }
 
