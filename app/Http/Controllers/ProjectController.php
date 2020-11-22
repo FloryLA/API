@@ -89,18 +89,24 @@ public function __construct()
     {
         $metodo=$request->method();
         $project=Project::find($id);
+        $flag=false;
         if($metodo==="PATCH"){
             $nombre=$request->get('Nombre');
             if($nombre!=null && $nombre!=''){
                 $project->Nombre=$nombre;
+                $flag=true;
             }
             $descripcion=$request->get('Descripcion');
             if($descripcion!=null && $descripcion!=''){
                 $project->Descripcion=$descripcion;
+                $flag=true;
             }
+
+            if($flag){
             $project->save();
-            
             return response()->json(['mensaje'=>'Proyecto Editado con exito','codigo'=>202],202);
+            }
+            return response()->json(['mensaje'=>'No se hicieron los cambios','codigo'=>200],200);
         }
         
         $nombre=$request->get('Nombre');
@@ -124,8 +130,20 @@ public function __construct()
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy($id)
     {
-        return 'Mostrar formulario para eliminar proyecto  con id '.$id;
+        $project=Project::find($id);
+        if(!$project){
+            return response()->json(['mensaje'=>'Proyecto no se encuentra ','codigo'=>202],202);
+        }
+        $category=$project->categories;
+        if(sizeof($category)>0){
+            return response()->json(['mensaje'=>'Proyecto posee categorias no se puede eliminar','codigo'=>404],404);
+        }
+
+        $project->delete();
+        return response()->json(['mensaje'=>'Proyecto eliminado ','codigo'=>200],200);
     }
+        //return 'Mostrar formulario para eliminar proyecto  con id '.$id;
+    
 }
