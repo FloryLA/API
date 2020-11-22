@@ -40,6 +40,7 @@ class ProjectCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+   // Metodo POST 
     public function store(Request $request, $id)
     {
         if( !$request->get('Nombre') || !$request->get('Descripcion')){
@@ -89,6 +90,7 @@ class ProjectCategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
+    //Actualizando Recursos Individuales con PUT Y PATCH
     public function update($idproject,  $idcategoryidcategory)
     {
         return 'Mostrar formulario para actualizar una categoria'.$idcategory.' del proyecto '.$idproject;

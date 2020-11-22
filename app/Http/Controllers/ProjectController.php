@@ -85,9 +85,37 @@ public function __construct()
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request,$id)
     {
-        return 'Mostrar formulario para modificar proyecto  con id '.$id;
+        $metodo=$request->method();
+        $project=Project::find($id);
+        if($metodo==="PATCH"){
+            $nombre=$request->get('Nombre');
+            if($nombre!=null && $nombre!=''){
+                $project->Nombre=$nombre;
+            }
+            $descripcion=$request->get('Descripcion');
+            if($descripcion!=null && $descripcion!=''){
+                $project->Descripcion=$descripcion;
+            }
+            $project->save();
+            
+            return response()->json(['mensaje'=>'Proyecto Editado con exito','codigo'=>202],202);
+        }
+        
+        $nombre=$request->get('Nombre');
+        $descripcion=$request->get('Descripcion');
+        if(!$nombre || !$descripcion){
+            return response()->json(['mensaje '=>'Datos Invalidos','codigo'=>404],404);
+        }
+
+        $project->Nombre=$nombre;
+        $project->Descripcion=$descripcion;
+        $project->save();
+      
+        return response()->json(['mensaje'=>'Proyecto Grabado con exito','codigo'=>202],202);
+        
+        //return 'Mostrar formulario para modificar proyecto  con id '.$id;
     }
 
     /**
