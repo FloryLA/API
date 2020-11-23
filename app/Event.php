@@ -22,14 +22,15 @@ class Event extends Model
         'recurrente',
         'periodo',
         'url',
-        'temporizador'
-];
+        'temporizador',
+       /*'usuario'*/
+       ];
 
     protected $hidden=['created_at','updated_at'];
 
 
     public function states(){
-        return $this->hasMany('App\Category');
+        return $this->hasMany('App\State');
     }
 
 }

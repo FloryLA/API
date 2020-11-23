@@ -10,7 +10,7 @@ class State extends Model
     protected $hidden=['created_at','updated_at'];
 
     public function Event(){
-        return $this->belongsTo('App\Project');
+        return $this->belongsTo('App\Event');
     }
 
 

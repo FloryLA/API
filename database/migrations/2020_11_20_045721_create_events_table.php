@@ -16,21 +16,23 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
             $table->string('direccion');
-            $table->string('latitud');
-            $table->string('longitud');
+            $table->decimal('latitud',10,7);
+            $table->decimal('longitud',10,7);
             $table->string('titulo');
             $table->string('tipoevento');
-            $table->string('descripcion');
+            $table->string('descripcion'); 
+            $table->dateTime('zonahoraria');
             $table->date('fechainicio');
             $table->date('fechafin');
             $table->time('horainicio');
             $table->time('horafin');
             $table->date('fecharecordatorio');
             $table->time('horariorecordatorio');
+            $table->time('temporizador');
             $table->string('recurrente');
             $table->string('periodo');
             $table->string('url');
-            $table->time('temporizador');
+           // $table->string('usuario');
 
             /*$table->integer('state_id')->unsigned();
             $table->foreign('state_id')->references('id')->on('states');

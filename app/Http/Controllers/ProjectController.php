@@ -88,8 +88,10 @@ public function __construct()
     public function update(Request $request,$id)
     {
         $metodo=$request->method();
+
         $project=Project::find($id);
         $flag=false;
+        
         if($metodo==="PATCH"){
             $nombre=$request->get('Nombre');
             if($nombre!=null && $nombre!=''){

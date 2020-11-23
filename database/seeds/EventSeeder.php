@@ -37,6 +37,8 @@ class EventSeeder extends Seeder
         'url'=>$faker->Image(),
         'temporizador'=>$faker->time()
         //'state'=>$faker->numberBetween(1,$cantidad)
+        //'usuario'=>$faker->numberBetween(1,$cantidad)
+
         ]);
 
         }

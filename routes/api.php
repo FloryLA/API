@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 //Route::get('/proyectos', 'ProjectController@index');
 
-/*Route::resource('proyectos', 'ProjectController');*/
+Route::resource('proyectos', 'ProjectController');
 //Route::resource('estados', 'StateController');
 Route::resource('eventos', 'EventController');
 //Route::resource('categorias', 'CategoryController',['only'=>['index','show']]);
