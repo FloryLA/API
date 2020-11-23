@@ -15,24 +15,25 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('Direccion');
+            $table->string('direccion');
             $table->string('latitud');
             $table->string('longitud');
-
-            $table->string('Titulo');
-            $table->string('TipoEvento');
-            $table->string('Descripcion');
-            $table->date('FechaInicio');
-            $table->date('FechaFin');
-            $table->time('HoraInicio');
-            $table->time('HoraFin');
-            $table->date('FechaRecordatorio');
-            $table->time('HoraRecordatorio');
-            $table->string('Recurrente',1);
-            $table->string('Periodo');
-            $table->string('Url');
+            $table->string('titulo');
+            $table->string('tipoevento');
+            $table->string('descripcion');
+            $table->date('fechainicio');
+            $table->date('fechafin');
+            $table->time('horainicio');
+            $table->time('horafin');
+            $table->date('fecharecordatorio');
+            $table->time('horariorecordatorio');
+            $table->string('recurrente');
+            $table->string('periodo');
+            $table->string('url');
             $table->time('temporizador');
 
+            /*$table->integer('state_id')->unsigned();
+            $table->foreign('state_id')->references('id')->on('states');
 
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');
@@ -40,12 +41,8 @@ class CreateEventsTable extends Migration
             $table->integer('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects');
 
-            $table->integer('state_id')->unsigned();
-            $table->foreign('state_id')->references('id')->on('states');
-
             $table->integer('workday_id')->unsigned();
-            $table->foreign('workday_id')->references('id')->on('workdays');
-
+            $table->foreign('workday_id')->references('id')->on('workdays');*/
             $table->timestamps();
         });
     }

@@ -15,11 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 //Route::get('/proyectos', 'ProjectController@index');
 
-Route::resource('proyectos', 'ProjectController');
-Route::resource('categorias', 'CategoryController',['only'=>['index','show']]);
-Route::resource('proyectos.categorias', 'ProjectCategoryController',['except'=>['show']]);
+/*Route::resource('proyectos', 'ProjectController');*/
+//Route::resource('estados', 'StateController');
+Route::resource('eventos', 'EventController');
+//Route::resource('categorias', 'CategoryController',['only'=>['index','show']]);
+//Route::resource('proyectos.categorias', 'ProjectCategoryController',['except'=>['show']]);
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/

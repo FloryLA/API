@@ -19,13 +19,12 @@ class CategorySeeder extends Seeder
         $cantidad =Project::all()->count();
         
         for ($i=0;$i <$cantidad; $i++)
-{
+         {
         Category::create
         ([
         'Nombre'=>$faker->word(10),
         'Descripcion'=>$faker->word(20),
         'project_id'=>$faker->numberBetween(1,$cantidad)
-
         ]);
 
           }

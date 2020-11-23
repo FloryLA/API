@@ -6,8 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    public function state(){
-        return $this->belongsTo('App\Project');
+    protected $fillable = [
+        'direccion',
+        'latitud',
+        'longitud',
+        'titulo',
+        'tipoevento',
+        'descripcion',
+        'fechainicio',
+        'fechafin',
+        'horainicio',
+        'horafin',
+        'fecharecordatorio',
+        'horariorecordatorio',
+        'recurrente',
+        'periodo',
+        'url',
+        'temporizador'
+];
+
+    protected $hidden=['created_at','updated_at'];
+
+
+    public function states(){
+        return $this->hasMany('App\Category');
     }
 
 }

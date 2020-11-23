@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ProjectSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(StateSeeder::class);
+        $this->call(EventSeeder::class);
+
         User::truncate();
         $this->call(UserSeeder::class);
     }

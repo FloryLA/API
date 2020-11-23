@@ -14,7 +14,9 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $event=Event::all();
+        //return 'Mostrar la lista de todos los poryectos  ' . $project;
+        return response()->json(['Acceso a Eventos'=>$event],202);
     }
 
     /**
@@ -35,7 +37,21 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!$request->get('direccion')|| !$request->get('latitud')
+        || !$request->get('longitud') || !$request->get('titulo')
+        || !$request->get('tipoevento') || !$request->get('descripcion')
+        || !$request->get('fechainicio') || !$request->get('fechafin')
+        || !$request->get('horainicio') || !$request->get('horafin')
+        || !$request->get('fecharecordatorio') || !$request->get('horariorecordatorio')
+        || !$request->get('recurrente') || !$request->get('periodo')
+        || !$request->get('url') || !$request->get('temporizador' )){
+
+            return response()->json(['mensaje'=>'faltan datos','codigo'=>422],422);
+           }
+
+           Event::create($request->all());
+          
+            return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
     }
 
     /**
@@ -44,9 +60,14 @@ class EventController extends Controller
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show(Event $event)
+    public function show($id)
     {
-        //
+        $event=Event::find($id);
+        //return 'Mostrar la lista de todos los poryectos  ' . $project;
+        if(!$event){
+            return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
+        }
+        return response()->json(['Acceso a Eventos'=>$event],202);
     }
 
     /**
@@ -78,8 +99,19 @@ class EventController extends Controller
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy($id)
     {
-        //
+        $event=Event::find($id);
+        if(!$event){
+            return response()->json(['mensaje'=>'Evento no se encuentra ','codigo'=>202],202);
+        }
+        /*
+        $category=$project->categories;
+        if(sizeof($category)>0){
+            return response()->json(['mensaje'=>'Proyecto posee categorias no se puede eliminar','codigo'=>404],404);
+        }*/
+
+        $event->delete();
+        return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);
     }
 }

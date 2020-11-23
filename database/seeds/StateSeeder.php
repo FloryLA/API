@@ -11,15 +11,13 @@ class StateSeeder extends Seeder
      */
     public function run()
     {
-        $faker=Faker::create();
-for ($i=0;$i <3;$i++)
-{
-    Project::create
-    ([
-        'Nombre'=>$faker->word(10),
-        'Descripcion'=>$faker->word(20)
-    ]);
-
-        }
+       /* $faker=Faker::create();
+        for ($i=0;$i <3;$i++)
+        {
+        Project::create
+        ([
+        'Nombre'=>$faker->word()
+        ]);
+        }*/
     }
 }

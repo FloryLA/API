@@ -48,7 +48,7 @@ public function __construct()
        }
        Project::create($request->all());
       
-        return response()->json(['mensaje'=>'Proyecto Creado'],202);
+        return response()->json(['mensaje'=>'Proyecto Creado','codigo'=>202],202);
     }
 
     /**
@@ -93,12 +93,12 @@ public function __construct()
         if($metodo==="PATCH"){
             $nombre=$request->get('Nombre');
             if($nombre!=null && $nombre!=''){
-                $project->Nombre=$nombre;
+                $project->nombre=$nombre;
                 $flag=true;
             }
             $descripcion=$request->get('Descripcion');
             if($descripcion!=null && $descripcion!=''){
-                $project->Descripcion=$descripcion;
+                $project->descripcion=$descripcion;
                 $flag=true;
             }
 
@@ -115,8 +115,8 @@ public function __construct()
             return response()->json(['mensaje '=>'Datos Invalidos','codigo'=>404],404);
         }
 
-        $project->Nombre=$nombre;
-        $project->Descripcion=$descripcion;
+        $project->nombre=$nombre;
+        $project->descripcion=$descripcion;
         $project->save();
       
         return response()->json(['mensaje'=>'Proyecto Grabado con exito','codigo'=>202],202);

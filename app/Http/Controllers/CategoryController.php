@@ -11,7 +11,7 @@ class CategoryController extends Controller
         $category=Category::all();
         //return 'Mostrar la lista de todos los poryectos  ' . $project;
         if(!$category){
-            return response()->json(['mensaje '=>'No hay categoria','codigo'=>404],404);
+            return response()->json(['mensaje '=>'No hay categorias','codigo'=>404],404);
         }
         return response()->json(['Acceso a Categorias'=>$category],202);
    
