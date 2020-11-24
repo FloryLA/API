@@ -21,13 +21,13 @@ class CreateEventsTable extends Migration
             $table->string('titulo');
             $table->string('tipoevento');
             $table->string('descripcion'); 
-            $table->dateTime('zonahoraria');
+           
             $table->date('fechainicio');
             $table->date('fechafin');
             $table->time('horainicio');
             $table->time('horafin');
             $table->date('fecharecordatorio');
-            $table->time('horariorecordatorio');
+            $table->time('horarecordatorio');
             $table->time('temporizador');
             $table->string('recurrente');
             $table->string('periodo');
@@ -45,7 +45,9 @@ class CreateEventsTable extends Migration
 
             $table->integer('workday_id')->unsigned();
             $table->foreign('workday_id')->references('id')->on('workdays');*/
+            $table->dateTimeTz('zonahoraria',0);
             $table->timestamps();
+
         });
     }
 

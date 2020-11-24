@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+  //  use SoftDeletes;    
     protected $fillable = [
         'direccion',
         'latitud',
@@ -18,11 +19,12 @@ class Event extends Model
         'horainicio',
         'horafin',
         'fecharecordatorio',
-        'horariorecordatorio',
+        'horarecordatorio',
         'recurrente',
         'periodo',
         'url',
         'temporizador',
+        'zonahoraria'
        /*'usuario'*/
        ];
 

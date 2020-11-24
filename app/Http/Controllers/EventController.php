@@ -12,12 +12,17 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getEvento($fechainicio)
     {
-        $event=Event::all();//where()
-
-        //return 'Mostrar la lista de todos los poryectos  ' . $project;
-        return response()->json(['Acceso a Eventos'=>$event],202);
+       // $event=Event::all();//where()
+       //return 'Mostrar la lista de todos los poryectos  ' . $project;
+       // return response()->json(['Acceso a Eventos'=>$event],202);
+       $event=Event::find($fechainicio);
+       //return 'Mostrar la lista de todos los poryectos  ' . $project;
+       if(!$event){
+           return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
+       }
+       return response()->json(['Acceso a Eventos'=>$event],202);
   
     }
 
@@ -39,14 +44,15 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        if(!$request->get('direccion') || !$request->get('latitud')
+      if(!$request->get('direccion') || !$request->get('latitud')
         || !$request->get('longitud') || !$request->get('titulo')
         || !$request->get('tipoevento') || !$request->get('descripcion')
         || !$request->get('fechainicio') || !$request->get('fechafin')
         || !$request->get('horainicio') || !$request->get('horafin')
-        || !$request->get('fecharecordatorio') || !$request->get('horariorecordatorio')
+        || !$request->get('fecharecordatorio') || !$request->get('horarecordatorio')
         || !$request->get('recurrente') || !$request->get('periodo')
-        || !$request->get('url') || !$request->get('temporizador' )){
+        || !$request->get('url') || !$request->get('temporizador' )
+        || !$request->get('zonahoraria')){
 
             return response()->json(['mensaje'=>'faltan datos','codigo'=>422],422);
            }
@@ -154,9 +160,9 @@ class EventController extends Controller
             $event->fecharecordatorio=$fecharecordatorio;
             $flag=true;
         } 
-        $horariorecordatorio=$request->get('horariorecordatorio');
-        if($horariorecordatorio!=null && $horariorecordatorio!=''){
-            $event->horariorecordatorio=$horariorecordatorio;
+        $horarecordatorio=$request->get('horarecordatorio');
+        if($horarecordatorio!=null && $horarecordatorio!=''){
+            $event->horarecordatorio=$horarecordatorio;
             $flag=true;
         } 
         $recurrente=$request->get('recurrente');
@@ -179,15 +185,19 @@ class EventController extends Controller
             $event->temporizador=$temporizador;
             $flag=true;
         } 
-           
-
+        $zonahoraria=$request->get('zonahoraria');
+        if($zonahoraria!=null && $zonahoraria!=''){
+            $event->zonahoraria=$zonahoraria;
+            $flag=true;
+        }
             if($flag){
-            $project->save();
+            $event->save();
             return response()->json(['mensaje'=>'Evento Editado con exito','codigo'=>202],202);
             }
             return response()->json(['mensaje'=>'No se hicieron los cambios','codigo'=>200],200);
         }
-        $direccion=$request->get('direccion');
+
+        $direccion=$request->get('direccion'); 
         $latitud=$request->get('latitud');
         $longitud=$request->get('longitud');
         $titulo=$request->get('titulo');
@@ -198,20 +208,21 @@ class EventController extends Controller
         $horainicio=$request->get('horainicio');
         $horafin=$request->get('horafin');
         $fecharecordatorio=$request->get('fecharecordatorio');
-        $horariorecordatorio=$request->get('horariorecordatorio');
+        $horarecordatorio=$request->get('horarecordatorio');
         $recurrente=$request->get('recurrente');
         $periodo=$request->get('periodo');
         $url=$request->get('url');
         $temporizador=$request->get('temporizador');
+        $zonahoraria=$request->get('zonahoraria'); 
 
         if(!$direccion || !$latitud
            || !$longitud || !$titulo
            || !$tipoevento ||!$descripcion
            || !$fechainicio || !$fechafin
            || !$horainicio || !$horafin
-           || !$fecharecordatorio || !$horariorecordatorio
+           || !$fecharecordatorio || !$horarecordatorio
            || !$recurrente || !$periodo
-           || !$url || !$temporizador
+           || !$url || !$temporizador || !$zonahoraria
         
         ){
             return response()->json(['mensaje '=>'Datos Invalidos','codigo'=>404],404);
@@ -228,13 +239,13 @@ class EventController extends Controller
         $event->horainicio=$horainicio;
         $event->horafin=$horafin;
         $event->fecharecordatorio=$fecharecordatorio;
-        $event->horariorecordatorio=$horariorecordatorio;
+        $event->horarecordatorio=$horarecordatorio;
         $event->recurrente=$recurrente;
         $event->periodo=$periodo;
         $event->url=$url;
         $event->temporizador=$temporizador;
+        $event->zonahoraria=$zonahoraria;
         $event->save();
-      
         return response()->json(['mensaje'=>'Evento Grabado con exito','codigo'=>202],202);
         
     }

@@ -14,7 +14,13 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        //
+        $activity=Activity::all();
+        //return 'Mostrar la lista de todos los poryectos  ' . $project;
+        if(!$activity){
+            return response()->json(['mensaje '=>'No hay activity','codigo'=>404],404);
+        }
+        return response()->json(['Acceso a Categorias'=>$activity],202);
+   
     }
 
     /**
@@ -44,9 +50,14 @@ class ActivityController extends Controller
      * @param  \App\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function show(Activity $activity)
+    public function show( $id)
     {
-        //
+         $activity=Activity::find($id);
+        //return 'Mostrar la lista de todos los poryectos  ' . $project;
+        if(!$activity){
+            return response()->json(['mensaje '=>'No se encontro el activity','codigo'=>404],404);
+        }
+        return response()->json(['Acceso a activity'=>$activity],202);
     }
 
     /**
