@@ -94,15 +94,33 @@ class EventController extends Controller
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show($fecharegistro)
+    public function show(Request $request, $fecharegistro)
     {
-        $event=Event::find($fecharegistro);
+        //$event=Event::find($id);
+        //$event=Event::find($id);
+        $event=Event::where("fecharegistro","=",$fecharegistro)->get();         
         //return 'Mostrar la lista de todos los poryectos  ' . $project;
         if(!$event){
             return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
         }
         return response()->json(['Acceso a Eventos'=>$event],202);
     }
+
+
+
+
+   /* public function getdate($fecharegistro)
+    {        
+        $event=Event::where('fecharegistro',$fecharegistro);
+        //return 'Mostrar la lista de todos los poryectos  ' . $project;
+        if(!$event){
+            return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
+        }
+        return response()->json(['Acceso a Eventos'=>$event],202);
+    }
+*/
+
+
 
     /**
      * Show the form for editing the specified resource.
