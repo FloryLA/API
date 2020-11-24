@@ -15,23 +15,24 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('direccion');
-            $table->decimal('latitud',10,7);
-            $table->decimal('longitud',10,7);
-            $table->string('titulo');
-            $table->string('tipoevento');
-            $table->string('descripcion'); 
-           
-            $table->date('fechainicio');
-            $table->date('fechafin');
-            $table->time('horainicio');
-            $table->time('horafin');
-            $table->date('fecharecordatorio');
-            $table->time('horarecordatorio');
-            $table->time('temporizador');
-            $table->string('recurrente');
-            $table->string('periodo');
-            $table->string('url');
+            
+            $table->string('direccion')->nullable();
+            $table->decimal('latitud',10,7)->nullable();
+            $table->decimal('longitud',10,7)->nullable();
+            $table->string('titulo')->nullable();
+            $table->string('tipoevento')->nullable();
+            $table->string('descripcion')->nullable(); 
+            $table->date('fecharegistro')->nullable();
+            $table->date('fechainicio')->nullable();
+            $table->date('fechafin')->nullable();
+            $table->time('horainicio')->nullable();
+            $table->time('horafin')->nullable();
+            $table->date('fecharecordatorio')->nullable();
+            $table->time('horarecordatorio')->nullable();
+            $table->time('temporizador')->nullable();
+            $table->string('recurrente')->nullable();
+            $table->string('periodo')->nullable();
+            $table->string('url')->nullable();
            // $table->string('usuario');
 
             /*$table->integer('state_id')->unsigned();
@@ -46,6 +47,8 @@ class CreateEventsTable extends Migration
             $table->integer('workday_id')->unsigned();
             $table->foreign('workday_id')->references('id')->on('workdays');*/
             $table->dateTimeTz('zonahoraria',0);
+            $table->integer('usuario_id')->unsigned()->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
         });

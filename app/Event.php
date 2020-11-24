@@ -3,10 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Event extends Model
 {
-  //  use SoftDeletes;    
+    use SoftDeletes;    
     protected $fillable = [
         'direccion',
         'latitud',
@@ -14,6 +14,7 @@ class Event extends Model
         'titulo',
         'tipoevento',
         'descripcion',
+        'fecharegistro',
         'fechainicio',
         'fechafin',
         'horainicio',
@@ -24,11 +25,11 @@ class Event extends Model
         'periodo',
         'url',
         'temporizador',
-        'zonahoraria'
-       /*'usuario'*/
+        'zonahoraria',
+         'usuario_id'
        ];
 
-    protected $hidden=['created_at','updated_at'];
+    protected $hidden=['deleted_at','created_at','updated_at'];
 
 
     public function states(){

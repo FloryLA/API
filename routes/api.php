@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//Route::get('/proyectos', 'ProjectController@index');
+Route::get('/eventos', 'EventController@store');
 
 Route::resource('proyectos', 'ProjectController');
 //Route::resource('estados', 'StateController');
 Route::resource('eventos', 'EventController');
+
 //Route::resource('categorias', 'CategoryController',['only'=>['index','show']]);
 //Route::resource('proyectos.categorias', 'ProjectCategoryController',['except'=>['show']]);
 

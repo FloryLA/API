@@ -22,6 +22,7 @@ class EventSeeder extends Seeder
             "titulo"=> "Ángela Solano",
             "tipoevento"=>"placeat",
             "descripcion"=>"sit",
+            'fecharegistro'=>'2006-10-26',
             "fechainicio"=>"2006-10-27",
             "fechafin"=>"1991-10-16",
             "horainicio"=>"20:50:07",
@@ -32,8 +33,8 @@ class EventSeeder extends Seeder
             "periodo"=>"sapiente",
             "url"=>"https://laravel.com/docs/8.x/migrations#introduction",
             "temporizador"=>"17:58:44",
-
-            'zonahoraria'=>'2006-10-27'
+            'zonahoraria'=>'2006-10-27',
+            'usuario_id'=>'2'
 
         //'state'=>$faker->numberBetween(1,$cantidad)
         //'usuario'=>$faker->numberBetween(1,$cantidad)
