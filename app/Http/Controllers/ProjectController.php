@@ -56,7 +56,7 @@ class ProjectController extends ApiController
             $nombre=$request->get('nombre');
             if($nombre!=null && $nombre!=''){
                 $project->nombre=$nombre; }
-            $descripcion=$request->get('descripcion');
+                $descripcion=$request->get('descripcion');
             if($descripcion!=null && $descripcion!=''){
                 $project->descripcion=$descripcion; }
 

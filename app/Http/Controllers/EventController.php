@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\EventRequest;
 
+use App\Http\Requests\UpEventRequest;
+use App\Http\Requests\EventRequest;
 class EventController extends ApiController
 {
     
@@ -75,19 +76,41 @@ class EventController extends ApiController
     }
  
 
-    public function update(EventRequest $request, $id)
-    {
-       // $this->validate($request);
-    $event=Event::findOrFail($id);
-        $event->fill($request->only([
-            'titulo',
-            'descripcion',
-        ]));
+    public function update(Request $request, $id)
+    {   
+        
+        $event=Event::findOrFail($id);
+        $data = $request->validate([
+                'empresa_id' => "nullable|numeric",
+                'sucursal_id' => "nullable|numeric",
+                'usuario_id' => "nullable|numeric",
+                'supervisor_id'=>"nullable|numeric",
+                'project_id' => "nullable|numeric|exists:projects,id",
+                'titulo' => "nullable|string|max:255",
+                'descripcion' => "nullable|string",
+                'direccion' => "nullable|string",
+                'latitud' => "nullable|numeric",
+                'longitud' => "nullable|numeric",
+                'tipoevento' => "nullable|string",
+                'fecharegistro' => "nullable|date",
+                'fechainicio' => "nullable|date",
+                'fechafin' => "nullable|date",
+                'horainicio'=> "nullable|date_format:H:i",
+                'horafin'=> "nullable|date_format:H:i",
+                'fecharecordatorio' => "nullable|date",
+                'horarecordatorio' => "nullable|date_format:H:i",
+                'temporizador' => "nullable|date_format:H:i",
+                'recurrente' => "nullable|string",
+                'periodo' => "nullable|string",
+                'url' => "nullable|string"       
+        ]);
+
+
+
        
-        if ($event->isClean()) {
-           return $this->errorResponse('Debe especificar al menos un valor diferente para actualizar',422);
-        }
-        $event->save();
+     //   $event->update($request->all());
+               
+        $event->update($data);
              return $this->showOne($event,201);
 
 
