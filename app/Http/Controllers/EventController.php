@@ -20,10 +20,6 @@ class EventController extends ApiController
   
     }
 
-  
-   
-
-     * Store a newly created resource in storage.
     
     public function store(EventCreateRequest $request,Event $event)
     {
@@ -117,7 +113,8 @@ class EventController extends ApiController
         ->whereHas("projects",function(Builder $query)use($proyecto_nombre){$query
         ->where("nombre",$proyecto_nombre);
         })->with('projects')->get();
-    	return response()->json(["message"=>"success",'eventos'=>$agendas],200);
+        return response()->json(["message"=>"success",'eventos'=>$agendas],200);
+        //return $this->showOne($event);
     }
    
 
@@ -130,7 +127,7 @@ class EventController extends ApiController
         }
 
         $event->delete();
-       return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);
-      
+     return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);
+    //  return $this->showOne($event);
     }
 }
