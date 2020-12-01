@@ -3,6 +3,10 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\User;
+use App\Category;
+use App\Project;
+use App\State;
+use App\Event;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -17,12 +21,60 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+
+$factory->define(Project::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
-    ];
+        'nombre' => $faker->word,
+        'descripcion' => $faker->paragraph(1),
+       ];});
+    
+
+  /* $factory->define(State::class, function (Faker $faker) {
+        return [
+            'nombre' => $faker->word,
+        
+           ];});
+
+
+$factory->define(Category::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->word,
+        'descripcion' => $faker->paragraph(1),
+        'id_project'=>Project::all()->random()->id,
+       ];
+});*/
+
+$factory->define(Event::class, function (Faker $faker) {
+  // $proyecto=Project::has('projects')->get()->random();
+//   $estado=State::all()->except($proyecto->id)->random();
+   
+    return [
+
+            'empresa_id'=>$faker->numberBetween(1,2),
+            'sucursal_id'=>$faker->numberBetween(1,2),
+            'usuario_id'=>$faker->numberBetween(1,2),
+            'supervisor_id'=>$faker->numberBetween(1,2),
+            'id_project'=>Project::all()->random()->id,
+            'titulo'=> $faker->word,
+            'descripcion'=>$faker->paragraph(1),
+            'direccion'=>$faker->word,
+            'latitud'=>63.3256412,
+            'longitud'=>-36.3256412,
+            'tipoevento'=>$faker->word,
+            'fecharegistro'=>'2020-11-24 16:31:10',
+            'fechainicio'=>'2020-11-24 16:31:10',
+            'fechafin'=>'2020-11-24 16:31:10',
+            'horainicio'=>'16:31:10',
+            'horafin'=>'16:31:10',
+            'fecharecordatorio'=>'2020-11-24 16:31:10',
+            'horarecordatorio'=>'16:31:10',
+            'temporizador'=>'16:31:10',
+            'recurrente'=> $faker->word,
+            'periodo'=>$faker->word,
+            'url'=>"https://laravel.com/docs/8.x/migrations#introduction"
+            
+           // 'id_state'=>State::all()->random()->id,
+
+       ];
+
 });

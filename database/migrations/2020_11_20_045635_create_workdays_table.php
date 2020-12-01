@@ -14,7 +14,7 @@ class CreateWorkdaysTable extends Migration
     public function up()
     {
         Schema::create('workdays', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('DiaInicio',1);
             $table->string('DiaFin',1);
             $table->date('FechaEntrada');
@@ -23,8 +23,7 @@ class CreateWorkdaysTable extends Migration
             $table->time('FinReceso');
             $table->date('FechaSalida');
             $table->time('HoraSalida');
-            
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

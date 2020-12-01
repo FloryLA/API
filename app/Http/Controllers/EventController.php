@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\EventCreateRequest;
 
-class EventController extends Controller
+class EventController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -17,14 +18,10 @@ class EventController extends Controller
     {
        $event=Event::all();//where()
        //return 'Mostrar la lista de todos los poryectos  ' . $project;
-       return response()->json(['Acceso a Eventos'=>$event],202);
-      // $event=Event::find();
-       //return 'Mostrar la lista de todos los poryectos  ' . $project;
-   /*    if(!$event){
-           return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
-       }
-       return response()->json(['Acceso a Eventos'=>$event],202);
-  */
+      // return response()->json(['data'=>$event],202);
+return $this->showAll($event);
+     
+  
     }
 
     /**
@@ -43,47 +40,15 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EventCreateRequest $request)
+    public function store(EventCreateRequest $request,Event $events)
     {
-    /*  if(!$request->get('direccion') || !$request->get('latitud')
-        || !$request->get('longitud') || !$request->get('titulo')
-        || !$request->get('tipoevento') || !$request->get('descripcion')
-        || !$request->get('fechainicio') || !$request->get('fechafin')
-        || !$request->get('horainicio') || !$request->get('horafin')
-        || !$request->get('fecharecordatorio') || !$request->get('horarecordatorio')
-        || !$request->get('recurrente') || !$request->get('periodo')
-        || !$request->get('url') || !$request->get('temporizador' )
-        || !$request->get('zonahoraria')){*/
+   
+          
 
-          /*  $this->validate( $request,
-        ['direccion'=>'required'],
-        ['direccion.required'=>'Es necesario ingresar una direccion para el evento'],
-        ['latitud'=>'required'],
-        ['longitud'=>'required'],
-        ['titulo'=>'required'],
-        ['tipoevento'=>'required'],
-        ['descripcion'=>'required'],
-        ['fecharegistro'=>'required'],
-        ['fechainicio'=>'required'],
-        ['fechafin'=>'required'],
-        ['horainicio'=>'required'],
-        ['horafin'=>'required'],
-        ['fecharecordatorio'=>'required'],
-        ['horarecordatorio'=>'required'],
-        ['recurrente'=>'required'],
-        ['periodo'=>'required'],
-        ['url'=>'required'],
-        ['temporizador'=>'required'],
-        ['zonahoraria'=>'required'],
-        ['usuario_id'=>'required']
-            );
-             
-            /*if(!$validate=""){
-          return response()->json(['mensaje'=>'faltan datos','codigo'=>422],422);
-            }*/
+           $events=Event::create($request->all());
 
-           Event::create($request->all());
-            return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
+           return $this->showOnel($event);
+           // return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
            
         
         }
@@ -94,18 +59,38 @@ class EventController extends Controller
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $fecharegistro)
+    public function show(Request $request, $id)
     {
         //$event=Event::find($id);
-        //$event=Event::find($id);
-        $event=Event::where("fecharegistro","=",$fecharegistro)->get();         
+       $event=Event::find($id);
+       // return $this->showOne($event);
+       /* $event=Event::where('id_usuario',"=",$id_usuario)
+        ->where('fecharecordatorio','=',$fechanotificacion)
+         ->where('fecharegistro','=',$fecharegistro)->get(); */        
         //return 'Mostrar la lista de todos los poryectos  ' . $project;
-        if(!$event){
+       if(!$event){
             return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
         }
-        return response()->json(['Acceso a Eventos'=>$event],202);
+        return response()->json(['data'=>$event],202);
     }
 
+
+    public function getEvents(Request $request)
+    {
+        $request->validate([
+            "id_usuario" => "required|numeric",
+            "fecha" => "required|date",
+          //'zonahororia'=>"required|date"
+        ]);
+
+        $id_usuario = $request->id_usuario;
+        $fecha = $request->fecha;
+
+        $eventos = Event::where("id_usuario","=",$id_usuario)->where(function($query)use($fecha){
+            $query->where('fechainicio',$fecha)->orWhere('fecharecordatorio',$fecha);
+        })->get();
+        return response()->json(['mensaje'=>'Success',"eventos"=>$eventos,'codigo'=>202],202);
+    }
 
 
 
@@ -145,7 +130,21 @@ class EventController extends Controller
       
         $event=Event::find($id);
         $flag=false;
-
+        $titulo=$request->get('titulo');
+        if($titulo!=null && $titulo!=''){
+            $event->titulo=$titulo;
+            $flag=true;
+        } 
+        $id_usuario=$request->get('id_usuario');
+        if($id_usuario!=null && $id_usuario!=''){
+            $event->id_usuario=$id_usuario;
+            $flag=true;
+        }
+        $descripcion=$request->get('descripcion');
+        if($descripcion!=null && $descripcion!=''){
+            $event->descripcion=$descripcion;
+            $flag=true;
+        } 
             $direccion=$request->get('direccion'); 
             if($direccion!=null && $direccion!=''){
                 $event->direccion=$direccion;
@@ -161,21 +160,13 @@ class EventController extends Controller
             $event->longitud=$longitud;
             $flag=true;
         } 
-         $titulo=$request->get('titulo');
-        if($titulo!=null && $titulo!=''){
-            $event->titulo=$titulo;
-            $flag=true;
-        } 
+        
         $tipoevento=$request->get('tipoevento');
         if($tipoevento!=null && $tipoevento!=''){
             $event->tipoevento=$tipoevento;
             $flag=true;
         } 
-        $descripcion=$request->get('descripcion');
-        if($descripcion!=null && $descripcion!=''){
-            $event->descripcion=$descripcion;
-            $flag=true;
-        } 
+       
         $fechainicio=$request->get('fechainicio');
         if($fechainicio!=null && $fechainicio!=''){
             $event->fechainicio=$fechainicio;
@@ -205,7 +196,13 @@ class EventController extends Controller
         if($horarecordatorio!=null && $horarecordatorio!=''){
             $event->horarecordatorio=$horarecordatorio;
             $flag=true;
+        }  
+        $temporizador=$request->get('temporizador');
+        if($temporizador!=null && $temporizador!=''){
+            $event->temporizador=$temporizador;
+            $flag=true;
         } 
+      
         $recurrente=$request->get('recurrente');
         if($recurrente!=null && $recurrente!=''){
             $event->recurrente=$recurrente;
@@ -221,16 +218,10 @@ class EventController extends Controller
             $event->url=$url;
             $flag=true;
         } 
-        $temporizador=$request->get('temporizador');
-        if($temporizador!=null && $temporizador!=''){
-            $event->temporizador=$temporizador;
-            $flag=true;
-        } 
-        $zonahoraria=$request->get('zonahoraria');
-        if($zonahoraria!=null && $zonahoraria!=''){
-            $event->zonahoraria=$zonahoraria;
-            $flag=true;
-        }
+       
+
+        
+
             if($flag){
             $event->save();
             return response()->json(['mensaje'=>'Evento Editado con exito','codigo'=>202],202);
@@ -247,9 +238,9 @@ class EventController extends Controller
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Event $event)
     {
-        $event=Event::find($id);
+        /*$events=Event::find($id);
         if(!$event){
             return response()->json(['mensaje'=>'Evento no se encuentra ','codigo'=>202],202);
         }
@@ -260,6 +251,7 @@ class EventController extends Controller
         }*/
 
         $event->delete();
-        return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);
+       /* return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);*/
+        return $this->showOne($event);
     }
 }

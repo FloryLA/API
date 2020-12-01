@@ -1,39 +1,43 @@
 <?php
 
 namespace App;
-
+use Project;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Event extends Model
 {
     use SoftDeletes;    
     protected $fillable = [
-        'direccion',
-        'latitud',
-        'longitud',
-        'titulo',
-        'tipoevento',
-        'descripcion',
-        'fecharegistro',
-        'fechainicio',
-        'fechafin',
-        'horainicio',
-        'horafin',
-        'fecharecordatorio',
-        'horarecordatorio',
-        'recurrente',
-        'periodo',
-        'url',
-        'temporizador',
-        'zonahoraria',
-         'usuario_id'
+            'empresa_id',
+            'sucursal_id'.
+            'usuario_id',
+            'supervisor_id',
+            'id_project',
+            'titulo',
+            'descripcion',
+            'direccion',
+            'latitud' ,
+            'longitud',
+            'tipoevento',
+            'fecharegistro',
+            'fechainicio',
+            'fechafin',
+            'horainicio',
+            'horafin',
+            'fecharecordatorio',
+            'horarecordatorio',
+            'temporizador',
+            'recurrente',
+            'periodo',
+            'url'
        ];
 
     protected $hidden=['deleted_at','created_at','updated_at'];
 
 
-    public function states(){
-        return $this->hasMany('App\State');
+    public function project(){
+        return $this->belongsTo('App\Project');
     }
+
 
 }

@@ -14,17 +14,17 @@ class CreateActivitiesTable extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('Titulo');
             $table->date('FechaInicio');
             $table->date('FechaFin');
 
-            $table->integer('category_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');
 
-            $table->integer('state_id')->unsigned();
+            $table->bigInteger('state_id')->unsigned();
             $table->foreign('state_id')->references('id')->on('states');
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

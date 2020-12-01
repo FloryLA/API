@@ -14,14 +14,20 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->increments('id');
-            
+            $table->id(); 
+             //Identificadores
+            $table->bigInteger('empresa_id')->nullable();
+            $table->bigInteger('sucursal_id')->nullable();
+            $table->bigInteger('usuario_id')->nullable();
+            $table->bigInteger('supervisor_id')->nullable();
+            $table->bigInteger('id_project')->unsigned()->nullable();
+            //informacion
+            $table->string('titulo')->nullable();
+            $table->string('descripcion')->nullable(); 
             $table->string('direccion')->nullable();
             $table->decimal('latitud',10,7)->nullable();
             $table->decimal('longitud',10,7)->nullable();
-            $table->string('titulo')->nullable();
             $table->string('tipoevento')->nullable();
-            $table->string('descripcion')->nullable(); 
             $table->date('fecharegistro')->nullable();
             $table->date('fechainicio')->nullable();
             $table->date('fechafin')->nullable();
@@ -33,23 +39,22 @@ class CreateEventsTable extends Migration
             $table->string('recurrente')->nullable();
             $table->string('periodo')->nullable();
             $table->string('url')->nullable();
-           // $table->string('usuario');
+            
 
-            /*$table->integer('state_id')->unsigned();
-            $table->foreign('state_id')->references('id')->on('states');
+           // $table->bigInteger('id_state')->unsigned()->nullable();
+           // $table->foreign('id_state')->references('id')->on('states');
 
-            $table->integer('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories');
+          /*  $table->bigInteger('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories');*/
 
-            $table->integer('project_id')->unsigned();
-            $table->foreign('project_id')->references('id')->on('projects');
+          
+            $table->foreign('id_project')->references('id')->on('projects');
 
-            $table->integer('workday_id')->unsigned();
+           /* $table->integer('workday_id')->unsigned();
             $table->foreign('workday_id')->references('id')->on('workdays');*/
-            $table->dateTimeTz('zonahoraria',0);
-            $table->integer('usuario_id')->unsigned()->nullable();
             $table->softDeletes();
-            $table->timestamps();
+            $table->timestamps(); 
+           
 
         });
     }

@@ -14,20 +14,17 @@ class CreateSubActivitiesTable extends Migration
     public function up()
     {
         Schema::create('sub_activities', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('Nombre');
             $table->date('FechaInicio');
             $table->date('FechaFin');
 
-            $table->integer('activity_id')->unsigned();
+            $table->bigInteger('activity_id')->unsigned();
             $table->foreign('activity_id')->references('id')->on('activities');
 
-            $table->integer('state_id')->unsigned();
+            $table->bigInteger('state_id')->unsigned();
             $table->foreign('state_id')->references('id')->on('states');
-
-
-
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

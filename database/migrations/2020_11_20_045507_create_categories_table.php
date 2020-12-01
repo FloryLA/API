@@ -15,14 +15,14 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             
-            $table->increments('id');
-            $table->string('Nombre');
-            $table->string('Descripcion');
-
-            $table->integer('project_id')->unsigned();
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->id();
+            $table->string('nombre');
+            $table->string('descripcion');
+            $table->bigInteger('id_project')->unsigned();
+            $table->foreign('id_project')->references('id')->on('projects');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

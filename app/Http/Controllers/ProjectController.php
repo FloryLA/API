@@ -45,6 +45,7 @@ public function __construct()
     {
          if(!$request->get('Nombre') || !$request->get('Descripcion')){
         return response()->json(['mensaje'=>'faltan datos','codigo'=>422],422);
+        
        }
        Project::create($request->all());
       
@@ -64,7 +65,7 @@ public function __construct()
         if(!$project){
             return response()->json(['mensaje '=>'No se encontro el proyecto','codigo'=>404],404);
         }
-        return response()->json(['Acceso a Proyectos'=>$project],202);
+        return response()->json(['data'=>$project],202);
     }
 
     /**
