@@ -18,8 +18,8 @@ class EventController extends ApiController
     {
        $event=Event::all();//where()
        //return 'Mostrar la lista de todos los poryectos  ' . $project;
-      // return response()->json(['data'=>$event],202);
-return $this->showAll($event);
+      return response()->json(['data'=>$event],202);
+     //return $this->showAll($event);
      
   
     }
@@ -40,15 +40,15 @@ return $this->showAll($event);
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EventCreateRequest $request,Event $events)
+    public function store(EventCreateRequest $request,Event $event)
     {
    
           
 
            $events=Event::create($request->all());
 
-           return $this->showOnel($event);
-           // return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
+           //return $this->showOnel($event);
+            return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
            
         
         }
@@ -74,24 +74,24 @@ return $this->showAll($event);
         return response()->json(['data'=>$event],202);
     }
 
-
+/*
     public function getEvents(Request $request)
     {
         $request->validate([
-            "id_usuario" => "required|numeric",
+            "usuario_id" => "required|numeric",
             "fecha" => "required|date",
           //'zonahororia'=>"required|date"
         ]);
 
-        $id_usuario = $request->id_usuario;
+        $usuario_id = $request->usuario_id;
         $fecha = $request->fecha;
 
-        $eventos = Event::where("id_usuario","=",$id_usuario)->where(function($query)use($fecha){
+        $eventos = Event::where("usuario_id","=",$usuario_id)->where(function($query)use($fecha){
             $query->where('fechainicio',$fecha)->orWhere('fecharecordatorio',$fecha);
         })->get();
         return response()->json(['mensaje'=>'Success',"eventos"=>$eventos,'codigo'=>202],202);
     }
-
+*/
 
 
    /* public function getdate($fecharegistro)
@@ -127,131 +127,67 @@ return $this->showAll($event);
      */
     public function update(Request $request, $id)
     {
-      
-        $event=Event::find($id);
-        $flag=false;
-        $titulo=$request->get('titulo');
-        if($titulo!=null && $titulo!=''){
-            $event->titulo=$titulo;
-            $flag=true;
-        } 
-        $id_usuario=$request->get('id_usuario');
-        if($id_usuario!=null && $id_usuario!=''){
-            $event->id_usuario=$id_usuario;
-            $flag=true;
-        }
-        $descripcion=$request->get('descripcion');
-        if($descripcion!=null && $descripcion!=''){
-            $event->descripcion=$descripcion;
-            $flag=true;
-        } 
-            $direccion=$request->get('direccion'); 
-            if($direccion!=null && $direccion!=''){
-                $event->direccion=$direccion;
-                $flag=true;
-            } 
-            $latitud=$request->get('latitud');
-        if($latitud!=null && $latitud!=''){
-            $event->latitud=$latitud;
-            $flag=true;
-        } 
-         $longitud=$request->get('longitud');
-        if($longitud!=null && $longitud!=''){
-            $event->longitud=$longitud;
-            $flag=true;
-        } 
-        
-        $tipoevento=$request->get('tipoevento');
-        if($tipoevento!=null && $tipoevento!=''){
-            $event->tipoevento=$tipoevento;
-            $flag=true;
-        } 
-       
-        $fechainicio=$request->get('fechainicio');
-        if($fechainicio!=null && $fechainicio!=''){
-            $event->fechainicio=$fechainicio;
-            $flag=true;
-        } 
-        $fechafin=$request->get('fechafin');
-        if($fechafin!=null && $fechafin!=''){
-            $event->fechafin=$fechafin;
-            $flag=true;
-        } 
-        $horainicio=$request->get('horainicio');
-        if($horainicio!=null && $horainicio!=''){
-            $event->horainicio=$horainicio;
-            $flag=true;
-        } 
-        $horafin=$request->get('horafin');
-        if($horafin!=null && $horafin!=''){
-            $event->horafin=$horafin;
-            $flag=true;
-        } 
-        $fecharecordatorio=$request->get('fecharecordatorio');
-        if($fecharecordatorio!=null && $fecharecordatorio!=''){
-            $event->fecharecordatorio=$fecharecordatorio;
-            $flag=true;
-        } 
-        $horarecordatorio=$request->get('horarecordatorio');
-        if($horarecordatorio!=null && $horarecordatorio!=''){
-            $event->horarecordatorio=$horarecordatorio;
-            $flag=true;
-        }  
-        $temporizador=$request->get('temporizador');
-        if($temporizador!=null && $temporizador!=''){
-            $event->temporizador=$temporizador;
-            $flag=true;
-        } 
-      
-        $recurrente=$request->get('recurrente');
-        if($recurrente!=null && $recurrente!=''){
-            $event->recurrente=$recurrente;
-            $flag=true;
-        } 
-        $periodo=$request->get('periodo');
-        if($periodo!=null && $periodo!=''){
-            $event->periodo=$periodo;
-            $flag=true;
-        } 
-        $url=$request->get('url');
-        if($url!=null && $url!=''){
-            $event->url=$url;
-            $flag=true;
-        } 
-       
+        $request->validate([
+    		'empresa_id' => "nullable|numeric",
+			'sucursal_id' => "nullable|numeric",
+			'usuario_id' => "required|numeric",
+			'supervisor_id'=> "required|numeric",
+			'project_id' => "required|numeric|exists:projects,id",
+			
+			'titulo' => "required|string|max:255",
+			'descripcion' =>"nullable|string",
+			'direccion' => "nullable|string",
+			'latitud' => "nullable|numeric",
+			'longitud' => "nullable|numeric",
+            'tipoevento' => "nullable|string",
+            'fecharegistro' => "nullable|date",
+			'fechainicio' => "nullable|date",
+            'fechafin' => "nullable|date",
+            'horainicio'=> "nullable|date_format:H:i",
+            'horafin'=> "nullable|date_format:H:i",
+			'fecharecordatorio' => "nullable|date",
+			'horarecordatorio' => "nullable|date_format:H:i",
+			'temporizador' => "nullable|date_format:H:i",
+			'recurrente' => "nullable|string",
+			'periodo' => "nullable|string",
+			'url' => "nullable|string"
+    	]);
 
-        
+    	$agenda = Event::create($request->all());
 
-            if($flag){
-            $event->save();
-            return response()->json(['mensaje'=>'Evento Editado con exito','codigo'=>202],202);
-            }
-            return response()->json(['mensaje'=>'No se hicieron los cambios','codigo'=>200],200);
-    
-
-        
+    	return response()->json(["message"=>"Evento creado", "evento"=>$agenda->load('project')],202); 
     }
 
+
+    public function proyecto(Request $request)
+    {
+    	$request->validate([
+    		"usuario_id" => "required|numeric",
+    		"projects" => "required|exists:projects,nombre"
+    	]);
+    	$usuario_id = $request->usuario_id;
+    	$proyecto_nombre = strtolower($request->proyecto);
+        $agendas = Event::where("usuario_id",$usuario_id)
+        ->whereHas("projects",function(Builder $query)use($proyecto_nombre){$query
+        ->where("nombre",$proyecto_nombre);
+        })->with('projects')->get();
+    	return response()->json(["message"=>"success",'eventos'=>$agendas],200);
+    }
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy( $id)
     {
-        /*$events=Event::find($id);
+        $event=Event::find($id);
         if(!$event){
             return response()->json(['mensaje'=>'Evento no se encuentra ','codigo'=>202],202);
         }
-        /*
-        $category=$project->categories;
-        if(sizeof($category)>0){
-            return response()->json(['mensaje'=>'Proyecto posee categorias no se puede eliminar','codigo'=>404],404);
-        }*/
 
         $event->delete();
-       /* return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);*/
-        return $this->showOne($event);
+       return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);
+      
     }
 }

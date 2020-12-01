@@ -23,7 +23,7 @@ Route::post("agenda/proyecto", "AgendaController@proyecto");
 //Eventos
 Route::resource('eventos', 'EventController');
 Route::post("eventos/dia","EventController@getEvents");
-Route::resource('eventos.proyectos', 'Event/EventProjectController',['only'=>['index']]);
+Route::resource('eventos.proyectos', 'Event\EventProjectController',['only'=>['index']]);
 
 
 //Proyectos

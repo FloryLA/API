@@ -27,24 +27,29 @@ class EventCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'titulo' => "required|string|max:255",
-            'id_usuario' => "required|numeric",
-            'descripcion' => "nullable|string|max:255",
-            'direccion' => "nullable|string|max:255",
-            'latitud' => "nullable|numeric",
-            'longitud' => "nullable|numeric",
-            'tipoevento' => "nullable|string|max:255",
+            'empresa_id' => "nullable|numeric",
+			'sucursal_id' => "nullable|numeric",
+			'usuario_id' => "required|numeric",
+			'supervisor_id'=>"required|numeric",
+			'project_id' => "required|numeric|exists:projects,id",
+			
+			'titulo' => "required|string|max:255",
+			'descripcion' => "nullable|string",
+			'direccion' => "nullable|string",
+			'latitud' => "nullable|numeric",
+			'longitud' => "nullable|numeric",
+            'tipoevento' => "nullable|string",
             'fecharegistro' => "nullable|date",
-            'fechainicio' => "nullable|date",
+			'fechainicio' => "nullable|date",
             'fechafin' => "nullable|date",
-            'horainicio' => "nullable|date_format:H:i",
-            'horafin' => "nullable|date_format:H:i",
-            'fecharecordatorio' => "nullable|date",
-            'horarecordatorio' => "nullable|date_format:H:i",
-            'temporizador' => "nullable|date_format:H:i",
-            'recurrente' => "nullable|string|max:255",
-            'periodo' => "nullable|string|max:255",
-             'url' => "nullable|string|max:255",
+            'horainicio'=> "nullable|date_format:H:i",
+            'horafin'=> "nullable|date_format:H:i",
+			'fecharecordatorio' => "nullable|date",
+			'horarecordatorio' => "nullable|date_format:H:i",
+			'temporizador' => "nullable|date_format:H:i",
+			'recurrente' => "nullable|string",
+			'periodo' => "nullable|string",
+			'url' => "nullable|string"
         ];
     }
 }

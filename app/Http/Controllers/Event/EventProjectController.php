@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Event;
 
 use App\Event;
-use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
 
 class EventProjectController extends ApiController
 {
@@ -16,7 +16,9 @@ class EventProjectController extends ApiController
     public function index(Event $event)
     {
         $projects=$event->project;
-        return $this->showAll($projects);
+
+       // return $this->showAll($projects);
+        return response()->json(['data'=>$projects],202);
     }
 
  
