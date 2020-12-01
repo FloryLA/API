@@ -9,11 +9,7 @@ use App\Http\Requests\EventCreateRequest;
 
 class EventController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
        $event=Event::all();//where()
@@ -24,27 +20,14 @@ class EventController extends ApiController
   
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+  
+   
 
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(EventCreateRequest $request,Event $event)
     {
    
-          
-
            $events=Event::create($request->all());
 
            //return $this->showOnel($event);
@@ -53,12 +36,7 @@ class EventController extends ApiController
         
         }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show(Request $request, $id)
     {
         //$event=Event::find($id);
@@ -74,7 +52,7 @@ class EventController extends ApiController
         return response()->json(['data'=>$event],202);
     }
 
-/*
+
     public function getEvents(Request $request)
     {
         $request->validate([
@@ -91,40 +69,8 @@ class EventController extends ApiController
         })->get();
         return response()->json(['mensaje'=>'Success',"eventos"=>$eventos,'codigo'=>202],202);
     }
-*/
+ 
 
-
-   /* public function getdate($fecharegistro)
-    {        
-        $event=Event::where('fecharegistro',$fecharegistro);
-        //return 'Mostrar la lista de todos los poryectos  ' . $project;
-        if(!$event){
-            return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
-        }
-        return response()->json(['Acceso a Eventos'=>$event],202);
-    }
-*/
-
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Event $event)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -173,12 +119,9 @@ class EventController extends ApiController
         })->with('projects')->get();
     	return response()->json(["message"=>"success",'eventos'=>$agendas],200);
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Event  $event
-     * @return \Illuminate\Http\Response
-     */
+   
+
+
     public function destroy( $id)
     {
         $event=Event::find($id);
