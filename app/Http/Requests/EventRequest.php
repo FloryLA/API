@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 
-class EventCreateRequest extends FormRequest
+class EventRequest extends FormRequest
 {
 
     //protected $redirectRoute = ' EventController@store  ' ;

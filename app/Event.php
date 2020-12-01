@@ -8,28 +8,28 @@ class Event extends Model
 {
     use SoftDeletes;    
     protected $fillable = [
-            'empresa_id',
-            'sucursal_id'.
-            'usuario_id',
-            'supervisor_id',
-            'id_project',
-            'titulo',
-            'descripcion',
-            'direccion',
-            'latitud' ,
-            'longitud',
-            'tipoevento',
-            'fecharegistro',
-            'fechainicio',
-            'fechafin',
-            'horainicio',
-            'horafin',
-            'fecharecordatorio',
-            'horarecordatorio',
-            'temporizador',
-            'recurrente',
-            'periodo',
-            'url'
+       'empresa_id',
+       'sucursal_id',
+       'usuario_id',
+        'supervisor_id',
+        'project_id',
+        'titulo',
+        'descripcion',
+        'direccion',
+        'latitud',
+        'longitud',
+        'tipoevento',
+        'fecharegistro',
+        'fechainicio',
+        'fechafin',
+        'horainicio',
+        'horafin',
+        'fecharecordatorio',
+        'horarecordatorio',
+        'temporizador',
+        'recurrente',
+        'periodo',
+        'url'
        ];
 
     protected $hidden=['deleted_at','created_at','updated_at'];

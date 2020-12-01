@@ -20,7 +20,7 @@ class CreateEventsTable extends Migration
             $table->bigInteger('sucursal_id')->nullable();
             $table->bigInteger('usuario_id')->nullable();
             $table->bigInteger('supervisor_id')->nullable();
-            $table->bigInteger('id_project')->unsigned()->nullable();
+            $table->bigInteger('project_id')->unsigned()->nullable();
             //informacion
             $table->string('titulo')->nullable();
             $table->string('descripcion')->nullable(); 
@@ -48,13 +48,12 @@ class CreateEventsTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories');*/
 
           
-            $table->foreign('id_project')->references('id')->on('projects');
+            $table->foreign('project_id')->references('id')->on('projects');
 
            /* $table->integer('workday_id')->unsigned();
             $table->foreign('workday_id')->references('id')->on('workdays');*/
             $table->softDeletes();
             $table->timestamps(); 
-           
 
         });
     }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\EventCreateRequest;
+use App\Http\Requests\EventRequest;
 
 class EventController extends ApiController
 {
@@ -14,20 +14,25 @@ class EventController extends ApiController
     {
        $event=Event::all();//where()
        //return 'Mostrar la lista de todos los poryectos  ' . $project;
-      return response()->json(['data'=>$event],202);
-     //return $this->showAll($event);
+    //  return response()->json(['data'=>$event],202);
+     return $this->showAll($event);
      
   
     }
 
     
-    public function store(EventCreateRequest $request,Event $event)
+    public function store(EventRequest $request,Event $event)
     {
+            
+          //  $this->validate($request);
    
            $events=Event::create($request->all());
+           //$agenda = Agenda::create($request->all());
 
-           //return $this->showOnel($event);
-            return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
+           //return response()->json(["message"=>"Evento creado", "evento"=>$agenda->load('proyecto')],202); 
+      
+           return $this->showOne($events->load('project'));
+          //  return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
            
         
         }
@@ -45,7 +50,9 @@ class EventController extends ApiController
        if(!$event){
             return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
         }
-        return response()->json(['data'=>$event],202);
+       // return response()->json(['data'=>$event],202);
+       return $this->showOne($event);
+       
     }
 
 
@@ -63,41 +70,27 @@ class EventController extends ApiController
         $eventos = Event::where("usuario_id","=",$usuario_id)->where(function($query)use($fecha){
             $query->where('fechainicio',$fecha)->orWhere('fecharecordatorio',$fecha);
         })->get();
-        return response()->json(['mensaje'=>'Success',"eventos"=>$eventos,'codigo'=>202],202);
+        //return response()->json(['mensaje'=>'Success',"eventos"=>$eventos,'codigo'=>202],202);
+        return $this->showOne($eventos);
     }
  
 
-    public function update(Request $request, $id)
+    public function update(EventRequest $request, $id)
     {
-        $request->validate([
-    		'empresa_id' => "nullable|numeric",
-			'sucursal_id' => "nullable|numeric",
-			'usuario_id' => "required|numeric",
-			'supervisor_id'=> "required|numeric",
-			'project_id' => "required|numeric|exists:projects,id",
-			
-			'titulo' => "required|string|max:255",
-			'descripcion' =>"nullable|string",
-			'direccion' => "nullable|string",
-			'latitud' => "nullable|numeric",
-			'longitud' => "nullable|numeric",
-            'tipoevento' => "nullable|string",
-            'fecharegistro' => "nullable|date",
-			'fechainicio' => "nullable|date",
-            'fechafin' => "nullable|date",
-            'horainicio'=> "nullable|date_format:H:i",
-            'horafin'=> "nullable|date_format:H:i",
-			'fecharecordatorio' => "nullable|date",
-			'horarecordatorio' => "nullable|date_format:H:i",
-			'temporizador' => "nullable|date_format:H:i",
-			'recurrente' => "nullable|string",
-			'periodo' => "nullable|string",
-			'url' => "nullable|string"
-    	]);
+       // $this->validate($request);
+    $event=Event::findOrFail($id);
+        $event->fill($request->only([
+            'titulo',
+            'descripcion',
+        ]));
+       
+        if ($event->isClean()) {
+           return $this->errorResponse('Debe especificar al menos un valor diferente para actualizar',422);
+        }
+        $event->save();
+             return $this->showOne($event,201);
 
-    	$agenda = Event::create($request->all());
 
-    	return response()->json(["message"=>"Evento creado", "evento"=>$agenda->load('project')],202); 
     }
 
 
@@ -105,16 +98,16 @@ class EventController extends ApiController
     {
     	$request->validate([
     		"usuario_id" => "required|numeric",
-    		"projects" => "required|exists:projects,nombre"
+    		"project" => "required|exists:projects,nombre"
     	]);
     	$usuario_id = $request->usuario_id;
     	$proyecto_nombre = strtolower($request->proyecto);
         $agendas = Event::where("usuario_id",$usuario_id)
-        ->whereHas("projects",function(Builder $query)use($proyecto_nombre){$query
+        ->whereHas("project",function(Builder $query)use($proyecto_nombre){$query
         ->where("nombre",$proyecto_nombre);
-        })->with('projects')->get();
-        return response()->json(["message"=>"success",'eventos'=>$agendas],200);
-        //return $this->showOne($event);
+        })->with('project')->get();
+       // return response()->json(["message"=>"success",'eventos'=>$agendas],200);
+        return $this->showOne($agendas);
     }
    
 
@@ -127,7 +120,7 @@ class EventController extends ApiController
         }
 
         $event->delete();
-     return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);
-    //  return $this->showOne($event);
+    // return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);
+     return $this->showOne('Eliminado',$event);
     }
 }
