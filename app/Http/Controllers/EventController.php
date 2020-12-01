@@ -6,7 +6,7 @@ use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 
-use App\Http\Requests\UpEventRequest;
+use App\Http\Requests\EventUpdate;
 use App\Http\Requests\EventRequest;
 class EventController extends ApiController
 {
@@ -76,11 +76,11 @@ class EventController extends ApiController
     }
  
 
-    public function update(Request $request, $id)
+    public function update(EventUpdate $request, $id)
     {   
         
         $event=Event::findOrFail($id);
-        $data = $request->validate([
+      /*  $data = $request->validate([
                 'empresa_id' => "nullable|numeric",
                 'sucursal_id' => "nullable|numeric",
                 'usuario_id' => "nullable|numeric",
@@ -103,14 +103,11 @@ class EventController extends ApiController
                 'recurrente' => "nullable|string",
                 'periodo' => "nullable|string",
                 'url' => "nullable|string"       
-        ]);
+        ]);*/
 
-
-
-       
-     //   $event->update($request->all());
+       $event->update($request->all());
                
-        $event->update($data);
+       // $event->update();
              return $this->showOne($event,201);
 
 
