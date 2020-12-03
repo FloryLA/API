@@ -29,8 +29,8 @@ class CreateEventsTable extends Migration
             $table->decimal('longitud',10,7)->nullable();
             $table->string('tipoevento')->nullable();
             $table->date('fecharegistro')->nullable();
-            $table->date('fechainicio')->nullable();
-            $table->date('fechafin')->nullable();
+            $table->timestamp('fechainicio')->nullable();
+            $table->timestamp('fechafin')->nullable();
             $table->time('horainicio')->nullable();
             $table->time('horafin')->nullable();
             $table->date('fecharecordatorio')->nullable();
@@ -40,7 +40,7 @@ class CreateEventsTable extends Migration
             $table->string('periodo')->nullable();
             $table->string('url')->nullable();
             
-
+           // $table->timestamp('fecha_hrora_i');
            // $table->bigInteger('id_state')->unsigned()->nullable();
            // $table->foreign('id_state')->references('id')->on('states');
 

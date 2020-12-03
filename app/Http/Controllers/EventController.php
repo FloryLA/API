@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests\EventUpdate;
 use App\Http\Requests\EventRequest;
@@ -66,6 +67,13 @@ public function __construct(Event $evento){
        
     }
 
+    public function all($limit, array $data = [])
+    {
+        $posts = $this->post->with('categories')
+            ->whereBetween('published_at', [Carbon::now($data['timezone']),Carbon::tomorrow($data['timezone'])]);
+    }
+
+
 
     public function getEvents(Request $request)
     {
@@ -74,33 +82,25 @@ public function __construct(Event $evento){
             "fecha" => "required|date",
           //'zonahororia'=>"required|date"
         ]);
-
-        $dt = Carbon::parse($request->ShootDateTime)->timezone("Europe/Madrid");
-        $toDay = $dt->format("d");
-        $toMonth = $dt->format("m");
-        $toYear = $dt->format("Y");        
-        $dateUTC = Carbon::createFromDate($toYear, $toMonth, $toDay, "UTC");
-        $datePST = Carbon::createFromDate($toYear, $toMonth, $toDay, "Europe/Madrid");
-        $difference = $dateUTC->diffInHours($datePST);
-        $date = $dt->addHours($difference); 
       
-   
+     // DB::connection()->enableQueryLog();
         $usuario_id = $request->usuario_id;
         $fecha = $request->fecha;
-
-        $eventos = Event::where("usuario_id","=",$usuario_id)->where(
-            function($query)use($fecha){
-            $query->where('fechainicio',$fecha)->orWhere('fecharecordatorio',$fecha);
+        $eventos = Event::where("usuario_id","=",$usuario_id)
+        ->where(function($query)use($fecha){$query
+        ->where('fechainicio',$fecha)
+        ->orWhere('fecharecordatorio',$fecha);
         })->get();
-        
-        return response()->json(['mensaje'=>'Success '.$date,"eventos"=>$eventos,'codigo'=>202],202);
-      /*  Auth::user()->timezone; // America/Toronto*/
+      
+     // $queries = DB::getQueryLog();
+      //return response()->json([$queries]);
+       return response()->json(['mensaje'=>'Success ',"eventos"=>$eventos,'codigo'=>202],202);
+        /*  Auth::user()->timezone; // America/Toronto*/
 
-       /* $query->whereDate($fecha, ">=", Carbon::now()->startOfDay()->tz(Auth::user()->timezone)->
+        /* $query->whereDate($fecha, ">=", Carbon::now()->startOfDay()->tz(Auth::user()->timezone)->
             $query->whereDate($fecha, "<=",Carbon::now()->endOfDay()->tz(Auth::user()->timezone);*/
-        
-         
-      //  return $this->showAll($eventos,'fecha:'.$date);
+        // return $this->showAll($eventos);
+
     }
  
 
@@ -118,7 +118,7 @@ public function __construct(Event $evento){
     }
 
 
-    public function proyecto(Request $request)
+    public function proyecto(Request $request,Event $evento)
     {
     	$request->validate([
     		"usuario_id" => "required|numeric",
@@ -126,10 +126,9 @@ public function __construct(Event $evento){
     	]);
     	$usuario_id = $request->usuario_id;
     	$proyecto_nombre = strtolower($request->proyecto);
-        $agendas = Event::where("usuario_id",$usuario_id)
+        $agendas = $evento::where("usuario_id",$usuario_id)
         ->whereHas("project",function(Builder $query)use($proyecto_nombre){$query
-        ->where("nombre",$proyecto_nombre);
-        })->with('project')->get();
+        ->where("nombre",$proyecto_nombre);})->with('project')->get();
        // return response()->json(["message"=>"success",'eventos'=>$agendas],200);
         return $this->showOne($agendas);
     }

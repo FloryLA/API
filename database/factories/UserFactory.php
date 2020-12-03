@@ -48,7 +48,7 @@ $factory->define(Event::class, function (Faker $faker) {
   // $proyecto=Project::has('projects')->get()->random();
 //   $estado=State::all()->except($proyecto->id)->random();
 //$dt = Carbon::parse($request->ShootDateTime)->timezone("America/Lima");
-$now = Carbon::now(); // will use timezone as set with date_default_timezone_set
+/*$now = Carbon::now(); // will use timezone as set with date_default_timezone_set
 // PS: we recommend you to work with UTC as default timezone and only use
 // other timezones (such as the user timezone) on display
 
@@ -58,7 +58,7 @@ $nowInLondonTz = Carbon::now(new DateTimeZone('Europe/London'));
 $nowInLondonTz = Carbon::now('Europe/London');
 
 $date = Carbon::now('+13:30');
-
+*/
 
    
     return [
@@ -75,14 +75,14 @@ $date = Carbon::now('+13:30');
             'latitud'=>63.3256412,
             'longitud'=>-36.3256412,
             'tipoevento'=>$faker->word,
-            'fecharegistro'=>$date,
-            'fechainicio'=>$date,
-            'fechafin'=>$date,
-            'horainicio'=>$date,
-            'horafin'=>$date,
-            'fecharecordatorio'=>$date,
-            'horarecordatorio'=>$date,
-            'temporizador'=>$date,
+            'fecharegistro'=>$faker->date,
+            'fechainicio'=>$faker->date,
+            'fechafin'=>$faker->date,
+            'horainicio'=> $faker->time,
+            'horafin'=> $faker->time,
+            'fecharecordatorio'=>$faker->date,
+            'horarecordatorio'=> $faker->time,
+            'temporizador'=> $faker->time,
             'recurrente'=> $faker->word,
             'periodo'=>$faker->word,
             'url'=>"https://laravel.com/docs/8.x/migrations#introduction"

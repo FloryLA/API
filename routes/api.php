@@ -2,6 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+DB::listen(function($query){
+    //Imprimimos la consulta ejecutada
+    echo "<pre> {$query->sql } </pre>";
+  });
+  
 
 /*
 |--------------------------------------------------------------------------
