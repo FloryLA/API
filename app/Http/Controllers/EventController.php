@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
@@ -10,6 +10,7 @@ use App\Http\Requests\EventUpdate;
 use App\Http\Requests\EventRequest;
 class EventController extends ApiController
 {
+   
  /*   protected $evento;
 public function __construct(Event $evento){
 
@@ -21,6 +22,8 @@ public function __construct(Event $evento){
        $event=Event::all();//where()
        //return 'Mostrar la lista de todos los poryectos  ' . $project;
     //  return response()->json(['data'=>$event],202);
+ 
+    
      return $this->showAll($event);
      
   
@@ -44,20 +47,22 @@ public function __construct(Event $evento){
         }
 
    
-    public function show(Request $request, $id)
+    public function show(Request $request,Event $evento)
     {
         //$event=Event::find($id);
-       $event=Event::find($id);
+       //$event=Event::find($id);
        // return $this->showOne($event);
        /* $event=Event::where('id_usuario',"=",$id_usuario)
         ->where('fecharecordatorio','=',$fechanotificacion)
          ->where('fecharegistro','=',$fecharegistro)->get(); */        
         //return 'Mostrar la lista de todos los poryectos  ' . $project;
-       if(!$event){
-            return response()->json(['mensaje '=>'No se encontro el evento','codigo'=>404],404);
+      
+       if(!$evento){
+            return response()->json(['mensaje '=>'No se encontro el evento hora:','codigo'=>404],404);
         }
        // return response()->json(['data'=>$event],202);
-       return $this->showOne($event);
+       
+       return $this->showOne($evento);
        
     }
 
@@ -70,26 +75,44 @@ public function __construct(Event $evento){
           //'zonahororia'=>"required|date"
         ]);
 
+        $dt = Carbon::parse($request->ShootDateTime)->timezone("Europe/Madrid");
+        $toDay = $dt->format("d");
+        $toMonth = $dt->format("m");
+        $toYear = $dt->format("Y");        
+        $dateUTC = Carbon::createFromDate($toYear, $toMonth, $toDay, "UTC");
+        $datePST = Carbon::createFromDate($toYear, $toMonth, $toDay, "Europe/Madrid");
+        $difference = $dateUTC->diffInHours($datePST);
+        $date = $dt->addHours($difference); 
+      
+   
         $usuario_id = $request->usuario_id;
         $fecha = $request->fecha;
 
-        $eventos = Event::where("usuario_id","=",$usuario_id)->where(function($query)use($fecha){
+        $eventos = Event::where("usuario_id","=",$usuario_id)->where(
+            function($query)use($fecha){
             $query->where('fechainicio',$fecha)->orWhere('fecharecordatorio',$fecha);
         })->get();
-        //return response()->json(['mensaje'=>'Success',"eventos"=>$eventos,'codigo'=>202],202);
-        return $this->showOne($eventos);
+        
+        return response()->json(['mensaje'=>'Success '.$date,"eventos"=>$eventos,'codigo'=>202],202);
+      /*  Auth::user()->timezone; // America/Toronto*/
+
+       /* $query->whereDate($fecha, ">=", Carbon::now()->startOfDay()->tz(Auth::user()->timezone)->
+            $query->whereDate($fecha, "<=",Carbon::now()->endOfDay()->tz(Auth::user()->timezone);*/
+        
+         
+      //  return $this->showAll($eventos,'fecha:'.$date);
     }
  
 
-    public function update(EventUpdate $request,$id)
+    public function update(EventUpdate $request, Event $evento)
     {   
         
-       $event=Event::findOrFail($id);
+       //$event=Event::findOrFail($id);
     
-       $event->update($request->all());
+       $evento->update($request->all());
                
        // $event->update();
-             return $this->showOne($event);
+             return $this->showOne($evento);
 
 
     }
@@ -113,15 +136,15 @@ public function __construct(Event $evento){
    
 
 
-    public function destroy( $id)
+    public function destroy(Event $evento)
     {
-        $event=Event::find($id);
-        if(!$event){
+        //$evento=Event::find($id);
+        if(!$evento){
             return response()->json(['mensaje'=>'Evento no se encuentra ','codigo'=>202],202);
         }
 
-        $event->delete();
+        $evento->delete();
     // return response()->json(['mensaje'=>'Evento eliminado ','codigo'=>200],200);
-     return $this->showOne('Eliminado',$event);
+     return $this->showOne($evento);
     }
 }
