@@ -67,11 +67,7 @@ public function __construct(Event $evento){
        
     }
 
-    public function all($limit, array $data = [])
-    {
-        $posts = $this->post->with('categories')
-            ->whereBetween('published_at', [Carbon::now($data['timezone']),Carbon::tomorrow($data['timezone'])]);
-    }
+  
 
 
 
