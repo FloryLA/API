@@ -31,10 +31,10 @@ class CreateEventsTable extends Migration
             $table->date('fecharegistro')->nullable();
             $table->timestamp('fechainicio')->nullable();
             $table->timestamp('fechafin')->nullable();
-            $table->time('horainicio')->nullable();
-            $table->time('horafin')->nullable();
-            $table->date('fecharecordatorio')->nullable();
-            $table->time('horarecordatorio')->nullable();
+           //$table->time('horainicio')->nullable();
+          //$table->time('horafin')->nullable();
+            $table->timestamp('fecharecordatorio')->nullable();
+          //$table->time('horarecordatorio')->nullable();
             $table->time('temporizador')->nullable();
             $table->string('recurrente')->nullable();
             $table->string('periodo')->nullable();

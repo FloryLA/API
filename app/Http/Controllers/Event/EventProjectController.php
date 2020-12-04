@@ -13,9 +13,9 @@ class EventProjectController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Event $event)
+    public function index(Event $evento)
     {
-        $projects=$event->project;
+        $projects=$evento->project;
 
        // return $this->showAll($projects);
         return response()->json(['data'=>$projects],202);

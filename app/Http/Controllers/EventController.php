@@ -6,7 +6,7 @@ use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\EventUpdate;
 use App\Http\Requests\EventRequest;
 class EventController extends ApiController
@@ -31,19 +31,47 @@ public function __construct(Event $evento){
     }
 
     
-    public function store(EventRequest $request,Event $event)
+    public function store(EventRequest $request)
     {
             
           //  $this->validate($request);
-   
-           $events=Event::create($request->all());
+
+            $parametros=[
+           
+            'empresa_id' => $request->empresa_id,
+			'sucursal_id' =>$request->sucursal_id,
+			'usuario_id' => $request->usuario_id,
+			'supervisor_id'=>$request->supervisor_id,
+			'project_id' => $request->project_id,
+			
+			'titulo' => $request->titulo,
+			'descripcion' => $request->descripcion,
+			'direccion' => $request->direccion,
+			'latitud' =>$request->latitud,
+			'longitud' => $request->longitud,
+            'tipoevento' =>$request->tipoevento,
+            'fecharegistro' => $request->fecharegistro,
+			'fechainicio' =>$request->fechainicio.' '.$request->horainicio,
+            'fechafin' => $request->fechafin.' '.$request->horafin,
+			'fecharecordatorio' => $request->fecharecordatorio.' '.$request->horarecordatorio,
+			//'horarecordatorio' => $request->fecharecordatorio.' '.$request->horarecordatorio,
+			'temporizador' =>$request->temporizador,
+			'recurrente' => $request->recurrente,
+			'periodo' => $request->periodo,
+			'url' => $request->url,
+
+            ];
+           // dd($parametros);
+           $events=Event::create($parametros);
+
+         
+           return $this->showOne($events->load('project'));
+          //  return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
+             
            //$agenda = Agenda::create($request->all());
 
            //return response()->json(["message"=>"Evento creado", "evento"=>$agenda->load('proyecto')],202); 
       
-           return $this->showOne($events->load('project'));
-          //  return response()->json(['mensaje'=>'Evento Creado','codigo'=>202],202);
-           
         
         }
 
@@ -62,13 +90,13 @@ public function __construct(Event $evento){
             return response()->json(['mensaje '=>'No se encontro el evento hora:','codigo'=>404],404);
         }
        // return response()->json(['data'=>$event],202);
-       
-       return $this->showOne($evento);
+      
+     // dd($evento->hora_inicio);
+             // $evento->fecha_ini;
+              $evento->fecha_ini = $evento->fecha_ini;
+       return $this->showOne($evento,);
        
     }
-
-  
-
 
 
     public function getEvents(Request $request)
@@ -78,8 +106,7 @@ public function __construct(Event $evento){
             "fecha" => "required|date",
           //'zonahororia'=>"required|date"
         ]);
-      
-     // DB::connection()->enableQueryLog();
+   
         $usuario_id = $request->usuario_id;
         $fecha = $request->fecha;
         $eventos = Event::where("usuario_id","=",$usuario_id)
@@ -87,18 +114,37 @@ public function __construct(Event $evento){
         ->where('fechainicio',$fecha)
         ->orWhere('fecharecordatorio',$fecha);
         })->get();
-      
-     // $queries = DB::getQueryLog();
+     
       //return response()->json([$queries]);
        return response()->json(['mensaje'=>'Success ',"eventos"=>$eventos,'codigo'=>202],202);
         /*  Auth::user()->timezone; // America/Toronto*/
 
         /* $query->whereDate($fecha, ">=", Carbon::now()->startOfDay()->tz(Auth::user()->timezone)->
             $query->whereDate($fecha, "<=",Carbon::now()->endOfDay()->tz(Auth::user()->timezone);*/
-        // return $this->showAll($eventos);
+        return $this->showAll($eventos);
 
     }
- 
+
+    //'fechainicio' => '2016-04-12 00:00:00'; dado por el usuario
+    //fecha = Dado
+    //id:usuario dado 
+
+    //Zonahoraria=dado tabla zona  $data['timezone']
+
+    public function all(array $data = [])
+    {
+        DB::connection()->enableQueryLog();
+        $queries = DB::getQueryLog();
+
+        $posts = $this->post->with('categories')
+
+        //fecha inicio
+ ->whereBetween('published_at', [Carbon::now($data['timezone']),Carbon::tomorrow($data['timezone'])]);
+
+ //->whereBetween('published_at', [Carbon::now($data['timezone']),Carbon::tomorrow($data['timezone'])]);
+    }
+
+ //fecha recordatorio
 
     public function update(EventUpdate $request, Event $evento)
     {   

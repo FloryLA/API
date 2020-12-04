@@ -39,5 +39,24 @@ class Event extends Model
         return $this->belongsTo('App\Project');
     }
 
+    
+public function getFechaIniAttribute(){
+
+
+$fecha=$this->fechainicio;
+$splitfecha = explode(" ",$fecha);
+
+return $splitfecha[0];
+
+}
+
+public function getHoraInicioAttribute(){
+   // $splithora=explode(' ',$this->fechainicio);
+   $fecha=$this->fechainicio;
+   $splitfecha = explode(" ",$fecha);
+   return $splitfecha[1];
+   //$splithora[1];
+}
+
 
 }
