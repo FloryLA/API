@@ -29,7 +29,6 @@ class EventUpdate extends FormRequest
 			'usuario_id' => "nullable|numeric",
 			'supervisor_id'=>"nullable|numeric",
 			'project_id' => "nullable|numeric|exists:projects,id",
-			
 			'titulo' => "nullable|string|max:255",
 			'descripcion' => "nullable|string",
 			'direccion' => "nullable|string",

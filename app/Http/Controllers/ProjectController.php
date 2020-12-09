@@ -12,8 +12,8 @@ class ProjectController extends ApiController
     {
         $project=Project::all();
         //return 'Mostrar la lista de todos los poryectos  ' . $project;
-        //return response()->json(['data'=>$project],202);
-        return $this->showAll($project);
+        return response()->json(['data'=>$project],202);
+        //return $this->showAll($project);
     }
 
     
@@ -60,8 +60,7 @@ class ProjectController extends ApiController
             if($descripcion!=null && $descripcion!=''){
                 $project->descripcion=$descripcion; }
 
-           
-            $project->save();
+            $project->update();
            // return response()->json(['mensaje'=>'Proyecto Editado con exito','codigo'=>202],202);
             return $this->showOne($project);
         

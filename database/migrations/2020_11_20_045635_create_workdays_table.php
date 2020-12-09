@@ -15,14 +15,14 @@ class CreateWorkdaysTable extends Migration
     {
         Schema::create('workdays', function (Blueprint $table) {
             $table->id();
-            $table->string('DiaInicio',1);
-            $table->string('DiaFin',1);
-            $table->date('FechaEntrada');
-            $table->time('HoraEntrada');
-            $table->time('InicioReceso');
-            $table->time('FinReceso');
-            $table->date('FechaSalida');
-            $table->time('HoraSalida');
+            $table->string('diainicio',1);
+            $table->string('diafin',1);
+            $table->date('fechaentrada');
+            $table->time('horaentrada');
+            $table->time('inicioreceso');
+            $table->time('finreceso');
+            $table->date('fechasalida');
+            $table->time('horasalida');
             $table->softDeletes();
             $table->timestamps();
         });

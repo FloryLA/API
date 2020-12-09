@@ -15,13 +15,15 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id(); 
-             //Identificadores
+          //Identificadores
             $table->bigInteger('empresa_id')->nullable();
             $table->bigInteger('sucursal_id')->nullable();
             $table->bigInteger('usuario_id')->nullable();
             $table->bigInteger('supervisor_id')->nullable();
             $table->bigInteger('project_id')->unsigned()->nullable();
-            //informacion
+            $table->bigInteger('contacto_id')->nullable();
+            $table->bigInteger('zonahoraria_id')->unsigned()->nullable();
+          //Informacion
             $table->string('titulo')->nullable();
             $table->string('descripcion')->nullable(); 
             $table->string('direccion')->nullable();
@@ -29,11 +31,11 @@ class CreateEventsTable extends Migration
             $table->decimal('longitud',10,7)->nullable();
             $table->string('tipoevento')->nullable();
             $table->date('fecharegistro')->nullable();
-            $table->timestamp('fechainicio')->nullable();
-            $table->timestamp('fechafin')->nullable();
-           //$table->time('horainicio')->nullable();
+            $table->timestamp('inicio')->nullable();
+            $table->timestamp('fin')->nullable();
+          //$table->time('horainicio')->nullable();
           //$table->time('horafin')->nullable();
-            $table->timestamp('fecharecordatorio')->nullable();
+            $table->timestamp('recordatorio')->nullable();
           //$table->time('horarecordatorio')->nullable();
             $table->time('temporizador')->nullable();
             $table->string('recurrente')->nullable();
@@ -49,6 +51,7 @@ class CreateEventsTable extends Migration
 
           
             $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('zonahoraria_id')->references('id')->on('timezones');
 
            /* $table->integer('workday_id')->unsigned();
             $table->foreign('workday_id')->references('id')->on('workdays');*/

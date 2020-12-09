@@ -32,7 +32,6 @@ class EventRequest extends FormRequest
 			'usuario_id' => "required|numeric",
 			'supervisor_id'=>"required|numeric",
 			'project_id' => "nullable|numeric|exists:projects,id",
-			
 			'titulo' => "required|string|max:255",
 			'descripcion' => "nullable|string",
 			'direccion' => "nullable|string",

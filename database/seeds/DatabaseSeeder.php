@@ -4,6 +4,7 @@ use App\user;
 use App\Project;
 use App\State;
 use App\Event;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -28,14 +29,14 @@ class DatabaseSeeder extends Seeder
      
       Project::truncate();
       //State::truncate();
-      Event::truncate();
+     // Event::truncate();
       //DB::table('category_product')->truncate();
 
      //$cantidadUsuarios=50;
-      $cantidadproyectos=30;
+      $cantidadproyectos=10;
       //$cantidadcategorias=50;
      // $cantidadestados=6;
-      $cantidadeventos=30;
+     // $cantidadeventos=30;
 
      
       factory(Project::class, $cantidadproyectos)->create();
@@ -50,9 +51,10 @@ class DatabaseSeeder extends Seeder
 	  $producto->categories()->attach($categorias);
 });*/
 
-        factory(Event::class, $cantidadeventos)->create();
+      //  factory(Event::class, $cantidadeventos)->create();
 
-    
+        $this->call(TimezoneSeeder::class);
+
 
     }
 }

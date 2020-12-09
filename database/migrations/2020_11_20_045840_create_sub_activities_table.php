@@ -15,9 +15,9 @@ class CreateSubActivitiesTable extends Migration
     {
         Schema::create('sub_activities', function (Blueprint $table) {
             $table->id();
-            $table->string('Nombre');
-            $table->date('FechaInicio');
-            $table->date('FechaFin');
+            $table->string('nombre');
+            $table->date('fechainicio');
+            $table->date('fechafin');
 
             $table->bigInteger('activity_id')->unsigned();
             $table->foreign('activity_id')->references('id')->on('activities');

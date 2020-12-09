@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use Carbon\Carbon;
-use App\User;
-use App\Category;
+//use App\User;
+//use App\Category;
 use App\Project;
-use App\State;
+//use App\State;
 use App\Event;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -43,6 +43,7 @@ $factory->define(Category::class, function (Faker $faker) {
         'id_project'=>Project::all()->random()->id,
        ];
 });*/
+/*
 
 $factory->define(Event::class, function (Faker $faker) {
   // $proyecto=Project::has('projects')->get()->random();
@@ -60,7 +61,7 @@ $nowInLondonTz = Carbon::now('Europe/London');
 $date = Carbon::now('+13:30');
 */
 
-   
+   /*
     return [
 
             'empresa_id'=>$faker->numberBetween(1,2),
@@ -92,3 +93,4 @@ $date = Carbon::now('+13:30');
        ];
 
 });
+*/
