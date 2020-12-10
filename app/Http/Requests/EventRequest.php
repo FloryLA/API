@@ -51,4 +51,12 @@ class EventRequest extends FormRequest
 			'url' => "nullable|string"
         ];
     }
+
+
+
+
+
+
+
+
 }

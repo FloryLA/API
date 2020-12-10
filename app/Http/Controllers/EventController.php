@@ -114,6 +114,7 @@ class EventController extends ApiController
         "zona_horaria" => "required|exists:timezones,nombre"
      
     ]);
+    
     DB::connection()->enableQueryLog();
     $queries = DB::getQueryLog();
     $usuario_id = $request->usuario_id;
@@ -216,12 +217,49 @@ class EventController extends ApiController
     	  $usuario_id = $request->usuario_id;
         $proyecto_nombre = strtolower($request->proyecto);
         
-        //$agendas = 
+       $agendas = Event::where("usuario_id",$usuario_id)
+        ->whereHas("project",function(Builder $query)use($proyecto_nombre){$query
+        ->where("nombre",$proyecto_nombre);})->with('project')->get();
      
         //return $this->showAll($agendas);
-        return response()->json(['data'=>Event::where("usuario_id",$usuario_id)
-        ->whereHas("project",function(Builder $query)use($proyecto_nombre){$query
-        ->where("nombre",$proyecto_nombre);})->with('project')->get()],200);
+         var_dump($agendas);
+        return response()->json(['data'=>$agendas],200);
+    }
+
+    public function proyectodia(Request $request)
+    {
+      $request->validate([
+        "usuario_id" => "required|numeric",
+        "fecha" => "required|date",
+        "zona_horaria" => "required|exists:timezones,nombre",
+        "project" => "required|exists:projects,nombre"
+     
+    ]);
+    DB::connection()->enableQueryLog();
+    $queries = DB::getQueryLog();
+
+    $usuario_id = $request->usuario_id;
+    $fecha = new Carbon($request->fecha,$request->zona_horaria);
+    $fecha_utc = $fecha->setTimezone('UTC');
+    $desde = $fecha->toDateTimeString();
+    $hasta = $fecha->add('days',1)->toDateTimeString();
+
+    $eventos = Event::where("usuario_id",$usuario_id)->where(function(Builder $query)use($desde,$hasta){
+      $query->whereBetween('inicio',[$desde,$hasta])->orWhereBetween("recordatorio",[$desde,$hasta]);
+    })->get();
+
+    foreach ($eventos as $evento) {
+      $ini = new Carbon($evento->inicio,"UTC");
+      $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
+      $fin = new Carbon($evento->fin,"UTC");
+      $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
+      $recordatorio = new Carbon($evento->recordatorio,"UTC");
+      $evento->recordatorio =$recordatorio->setTimezone($request->zona_horaria)->toDateTimeString();
+    }
+
+    $resource = new EventCollection($eventos);
+    return response()->json(['data'=>$resource],200);
+    //return $this->showOne($resource);
     }
    
 
