@@ -9,9 +9,6 @@ DB::listen(function($query){
   });*/
   
 
-
-
-
 Route::resource('proyectos', 'ProjectController');
 Route::resource('zonashorarias', 'TimezoneController');
 

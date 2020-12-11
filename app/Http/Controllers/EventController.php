@@ -18,21 +18,17 @@ use Illuminate\Database\Eloquent\Builder;
 
 class EventController extends ApiController
 {
-
     
     public function index()
     {
        $events=Event::all();
- 
-        $resource = new EventCollection($events);
+         $resource = new EventCollection($events);
         return response()->json(['data'=>$resource],200);
-  
-    }
+      }
 
     
     public function store(EventRequest $request)
-    {
-            
+    {            
           //  $this->validate($request);
           $fecha_inicio = (
             $request->fechainicio ? (
@@ -85,9 +81,7 @@ class EventController extends ApiController
 
           ];
            // dd($parametros);
-           $events=Event::create($parametros);
-
-         
+           $events=Event::create($parametros);       
            //return $this->showOne($events->load('project'));
            $resource = new EventResource($events);
            return response()->json(['data'=>$resource],201);
@@ -97,15 +91,13 @@ class EventController extends ApiController
    
     public function show(Request $request,Event $evento)
     {
-        
-       if(!$evento){
+         if(!$evento){
             return response()->json(['mensaje '=>'No se encontro el evento hora:','codigo'=>404],404);
-        }
-      
+        }      
              $resource = new EventResource($evento);
        return response()->json(["data"=>$resource],200);
-       
     }
+
 
   public function getEvents(Request $request)
     {
@@ -113,16 +105,12 @@ class EventController extends ApiController
         "usuario_id" => "required|numeric",
         "fecha" => "required|date",
         "zona_horaria" => "required|exists:timezones,nombre"
-     
     ]);
 
-    DB::connection()->enableQueryLog();
-    $queries = DB::getQueryLog();
+    
     $usuario_id = $request->usuario_id;
-
     $fecha = new Carbon($request->fecha,$request->zona_horaria);
     $fecha_utc = $fecha->setTimezone('UTC');
-
     $desde = $fecha->toDateTimeString();
     $hasta = $fecha->add('days',1)->toDateTimeString();
     $eventos = Event::where("usuario_id",$usuario_id)->where(function(Builder $query)use($desde,$hasta){
@@ -131,26 +119,23 @@ class EventController extends ApiController
 
     foreach ($eventos as $evento) {
       $fechar= new Carbon($evento->fecharegistro,"UTC");
-      $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString(); 
-      
+      $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();
       $ini = new Carbon($evento->inicio,"UTC");
       $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
-
       $fin = new Carbon($evento->fin,"UTC");
       $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
-
       $recordatorio = new Carbon($evento->recordatorio,"UTC");
       $evento->recordatorio =$recordatorio->setTimezone($request->zona_horaria)->toDateTimeString();
     }
-
     $resource = new EventCollection($eventos);
     return response()->json(['data'=>$resource],200);
     //return $this->showOne($resource);
     }
 
-    //============Endpoint eventos por usario============
 
-    public function Eventsusuario(Request $request)
+
+    //============Endpoint eventos por usario============
+  public function Eventsusuario(Request $request)
     {
       $request->validate([
         "usuario_id" => "required|numeric",
@@ -161,25 +146,19 @@ class EventController extends ApiController
     $eventos = Event::where("usuario_id",$usuario_id)->get();
 
     foreach ($eventos as $evento) {
-   
       $fechar= new Carbon($evento->fecharegistro,"UTC");
       $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();
-
       $ini = new Carbon($evento->inicio,"UTC");
       $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
-
       $fin = new Carbon($evento->fin,"UTC");
       $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
-
       $recordatorio = new Carbon($evento->recordatorio,"UTC");
       $evento->recordatorio =$recordatorio->setTimezone($request->zona_horaria)->toDateTimeString();
     }
     $resource = new EventCollection($eventos);
     return response()->json(['data'=>$resource],200);
-  
     }
 
-     
     public function update(EventUpdate $request, Event $evento)
     {  
       $fecha_inicio = (
@@ -207,7 +186,6 @@ class EventController extends ApiController
       );
 
       $parametros=[
-     
       'empresa_id' => $request->empresa_id ? $request->empresa_id : $evento->empresa_id,
       'sucursal_id' =>$request->sucursal_id ? $request->sucursal_id : $evento->sucursal_id,
       'usuario_id' => $request->usuario_id ? $request->usuario_id : $evento->usuario_id,
@@ -232,22 +210,16 @@ class EventController extends ApiController
       'url' => $request->url ? $request->url : $evento->url,
 
       ];
-    
         $evento->update($parametros);
         $resource = new EventResource($evento);
         return response()->json(['data'=>$resource],201);
                
-     
-
 
     }
 
 
     public function proyecto(Request $request,Event $evento)
     {
-        DB::connection()->enableQueryLog();
-        $queries = DB::getQueryLog();
-         
         $request->validate([
     		"usuario_id" => "required|numeric",
     		"project" => "required|exists:projects,nombre"
@@ -255,7 +227,6 @@ class EventController extends ApiController
       
     	  $usuario_id = $request->usuario_id;
         $proyecto_nombre = strtolower($request->proyecto);
-        
        $agendas = Event::where("usuario_id","=",$usuario_id)
         ->whereHas("project",function(Builder $query)use($proyecto_nombre){$query
         ->where("nombre",$proyecto_nombre);})->with('project')->get();
@@ -269,11 +240,9 @@ class EventController extends ApiController
 
     public function destroy(Event $evento)
     {
-       
         if(!$evento){
             return response()->json(['mensaje'=>'Evento no se encuentra ','codigo'=>202],202);
         }
-
         $evento->delete();
         $resource = new EventResource($evento);
         return response()->json(["message"=>"success",'data'=>$resource],200);
