@@ -98,13 +98,12 @@ class EventController extends ApiController
     public function show(Request $request,Event $evento)
     {
         
-      
        if(!$evento){
             return response()->json(['mensaje '=>'No se encontro el evento hora:','codigo'=>404],404);
         }
       
-           $resource = new EventResource($evento);
-       return $this->showOne($evento,);
+             $resource = new EventResource($evento);
+       return response()->json(["data"=>$resource],200);
        
     }
 
@@ -131,10 +130,15 @@ class EventController extends ApiController
     })->get();
 
     foreach ($eventos as $evento) {
+      $fechar= new Carbon($evento->fecharegistro,"UTC");
+      $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString(); 
+      
       $ini = new Carbon($evento->inicio,"UTC");
       $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
+
       $fin = new Carbon($evento->fin,"UTC");
       $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
+
       $recordatorio = new Carbon($evento->recordatorio,"UTC");
       $evento->recordatorio =$recordatorio->setTimezone($request->zona_horaria)->toDateTimeString();
     }
@@ -158,14 +162,11 @@ class EventController extends ApiController
 
     foreach ($eventos as $evento) {
    
-      $fechareg = new Carbon($evento->fecharegistro,$request->zona_horaria);
-      $evento->fecharegistro = $fechareg->setTimezone("UTC")->toDateTimeString();
+      $fechar= new Carbon($evento->fecharegistro,"UTC");
+      $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();
 
-     // $fechareg = new Carbon($evento->fecharegistro,"UTC");
-     // $evento->fecharegistro = $fechareg->setTimezone($request->zona_horaria)->toDateTimeString();
-
-      $ini = new Carbon($evento->inicio,$request->zona_horaria);
-      $evento->inicio = $ini->setTimezone("UTC")->toDateTimeString();
+      $ini = new Carbon($evento->inicio,"UTC");
+      $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
 
       $fin = new Carbon($evento->fin,"UTC");
       $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
