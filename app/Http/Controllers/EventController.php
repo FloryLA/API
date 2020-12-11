@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Event;
-use App\Timezone;
+
 use App\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -107,7 +107,6 @@ class EventController extends ApiController
         "zona_horaria" => "required|exists:timezones,nombre"
     ]);
 
-    
     $usuario_id = $request->usuario_id;
     $fecha = new Carbon($request->fecha,$request->zona_horaria);
     $fecha_utc = $fecha->setTimezone('UTC');
@@ -118,8 +117,6 @@ class EventController extends ApiController
     })->get();
 
     foreach ($eventos as $evento) {
-      $fechar= new Carbon($evento->fecharegistro,"UTC");
-      $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();
       $ini = new Carbon($evento->inicio,"UTC");
       $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
       $fin = new Carbon($evento->fin,"UTC");
@@ -143,12 +140,13 @@ class EventController extends ApiController
     ]);
     $usuario_id = $request->usuario_id;
     $zona_horaria = $request->zona_horaria;
-    $eventos = Event::where("usuario_id",$usuario_id)->get();
-
+   
+    $eventos = Event::where("usuario_id",$usuario_id)->whereNotNull('fecharegistro')->get();
     foreach ($eventos as $evento) {
       $fechar= new Carbon($evento->fecharegistro,"UTC");
       $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();
       $ini = new Carbon($evento->inicio,"UTC");
+      //$fini = $ini->add('days',1);
       $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
       $fin = new Carbon($evento->fin,"UTC");
       $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
