@@ -143,8 +143,8 @@ class EventController extends ApiController
    
     $events = Event::where("usuario_id","=",$usuario_id)->whereNotNull('fecharegistro')->get();
     foreach ($events as $evento) {
-      $fechar= new Carbon($evento->fecharegistro,"UTC");
-      $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();
+     /* $fechar= new Carbon($evento->fecharegistro,"UTC");
+      $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();*/
       
       $ini = new Carbon($evento->inicio,"UTC");
       //$fini = $ini->add('days',1);
