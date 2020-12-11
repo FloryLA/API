@@ -30,7 +30,7 @@ class EventRequest extends FormRequest
             'empresa_id' => "nullable|numeric",
 			'sucursal_id' => "nullable|numeric",
 			'usuario_id' => "required|numeric",
-			'supervisor_id'=>"required|numeric",
+			'supervisor_id'=>"nullable|numeric",
 			'project_id' => "nullable|numeric|exists:projects,id",
 			'titulo' => "required|string|max:255",
 			'descripcion' => "nullable|string",

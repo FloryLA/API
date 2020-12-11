@@ -29,6 +29,7 @@ Route::resource('zonashorarias', 'TimezoneController');
 
 //Eventos
 Route::post("eventos/dia","EventController@getEvents");
+//Route::post("eventos/mes","EventController@getEventsmes");
 Route::resource('eventos', 'EventController');
 Route::post("eventos/proyecto", "EventController@proyecto");
 

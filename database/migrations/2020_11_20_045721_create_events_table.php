@@ -22,7 +22,7 @@ class CreateEventsTable extends Migration
             $table->bigInteger('supervisor_id')->nullable();
             $table->bigInteger('project_id')->unsigned()->nullable();
             $table->bigInteger('contacto_id')->nullable();
-            $table->bigInteger('zonahoraria_id')->unsigned()->nullable();
+           
           //Informacion
             $table->string('titulo')->nullable();
             $table->string('descripcion')->nullable(); 
@@ -51,7 +51,7 @@ class CreateEventsTable extends Migration
 
           
             $table->foreign('project_id')->references('id')->on('projects');
-            $table->foreign('zonahoraria_id')->references('id')->on('timezones');
+           
 
            /* $table->integer('workday_id')->unsigned();
             $table->foreign('workday_id')->references('id')->on('workdays');*/

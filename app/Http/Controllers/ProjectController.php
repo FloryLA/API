@@ -25,7 +25,7 @@ class ProjectController extends ApiController
        $reglas=[
         "nombre" => "required",
         "descripcion" => "required"   ];
-    $this->validate ($request,$reglas);
+       $this->validate ($request,$reglas);
        $project=Project::create($request->all());
        // return response()->json(['mensaje'=>'Proyecto Creado','codigo'=>202],202);
         return $this->showOne($project);
