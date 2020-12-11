@@ -141,10 +141,11 @@ class EventController extends ApiController
     $usuario_id = $request->usuario_id;
     $zona_horaria = $request->zona_horaria;
    
-    $eventos = Event::where("usuario_id",$usuario_id)->whereNull('fecharegistro')->get();
-    foreach ($eventos as $evento) {
+    $events = Event::where("usuario_id","=",$usuario_id)->whereNotNull('fecharegistro')->get();
+    foreach ($events as $evento) {
       $fechar= new Carbon($evento->fecharegistro,"UTC");
       $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();
+      
       $ini = new Carbon($evento->inicio,"UTC");
       //$fini = $ini->add('days',1);
       $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
@@ -153,8 +154,10 @@ class EventController extends ApiController
       $recordatorio = new Carbon($evento->recordatorio,"UTC");
       $evento->recordatorio =$recordatorio->setTimezone($request->zona_horaria)->toDateTimeString();
     }
-    $resource = new EventCollection($eventos);
+    $resource = new EventCollection($events);
+    //var_dump($eventos);
     return response()->json(['data'=>$resource],200);
+
     }
 
     public function update(EventUpdate $request, Event $evento)
