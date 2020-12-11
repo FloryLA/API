@@ -141,7 +141,7 @@ class EventController extends ApiController
     $usuario_id = $request->usuario_id;
     $zona_horaria = $request->zona_horaria;
    
-    $eventos = Event::where("usuario_id",$usuario_id)->whereNotNull('fecharegistro')->get();
+    $eventos = Event::where("usuario_id",$usuario_id)->whereNull('fecharegistro')->get();
     foreach ($eventos as $evento) {
       $fechar= new Carbon($evento->fecharegistro,"UTC");
       $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();
