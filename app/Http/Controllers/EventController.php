@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Event;
+use App\Timezone;
+use App\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EventUpdate;
@@ -118,8 +120,10 @@ class EventController extends ApiController
     DB::connection()->enableQueryLog();
     $queries = DB::getQueryLog();
     $usuario_id = $request->usuario_id;
+
     $fecha = new Carbon($request->fecha,$request->zona_horaria);
     $fecha_utc = $fecha->setTimezone('UTC');
+
     $desde = $fecha->toDateTimeString();
     $hasta = $fecha->add('days',1)->toDateTimeString();
     $eventos = Event::where("usuario_id",$usuario_id)->where(function(Builder $query)use($desde,$hasta){
@@ -138,6 +142,40 @@ class EventController extends ApiController
     $resource = new EventCollection($eventos);
     return response()->json(['data'=>$resource],200);
     //return $this->showOne($resource);
+    }
+
+    //============Endpoint eventos por usario============
+
+    public function Eventsusuario(Request $request)
+    {
+      $request->validate([
+        "usuario_id" => "required|numeric",
+        "zona_horaria" => "required|exists:timezones,nombre"
+    ]);
+    $usuario_id = $request->usuario_id;
+    $zona_horaria = $request->zona_horaria;
+    $eventos = Event::where("usuario_id",$usuario_id)->get();
+
+    foreach ($eventos as $evento) {
+   
+      $fechareg = new Carbon($evento->fecharegistro,$request->zona_horaria);
+      $evento->fecharegistro = $fechareg->setTimezone("UTC")->toDateTimeString();
+
+     // $fechareg = new Carbon($evento->fecharegistro,"UTC");
+     // $evento->fecharegistro = $fechareg->setTimezone($request->zona_horaria)->toDateTimeString();
+
+      $ini = new Carbon($evento->inicio,$request->zona_horaria);
+      $evento->inicio = $ini->setTimezone("UTC")->toDateTimeString();
+
+      $fin = new Carbon($evento->fin,"UTC");
+      $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
+
+      $recordatorio = new Carbon($evento->recordatorio,"UTC");
+      $evento->recordatorio =$recordatorio->setTimezone($request->zona_horaria)->toDateTimeString();
+    }
+    $resource = new EventCollection($eventos);
+    return response()->json(['data'=>$resource],200);
+  
     }
 
      
@@ -217,7 +255,7 @@ class EventController extends ApiController
     	  $usuario_id = $request->usuario_id;
         $proyecto_nombre = strtolower($request->proyecto);
         
-       $agendas = Event::where("usuario_id",$usuario_id)
+       $agendas = Event::where("usuario_id","=",$usuario_id)
         ->whereHas("project",function(Builder $query)use($proyecto_nombre){$query
         ->where("nombre",$proyecto_nombre);})->with('project')->get();
      
