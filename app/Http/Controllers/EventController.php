@@ -142,7 +142,7 @@ class EventController extends ApiController
     $zona_horaria = $request->zona_horaria;
    
     $events = Event::where("usuario_id","=",$usuario_id)->whereNotNull('fecharegistro')->get();
-    foreach ($events as $evento) {
+    foreach ($eventos as $evento) {
      /* $fechar= new Carbon($evento->fecharegistro,"UTC");
       $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();*/
       
@@ -233,7 +233,7 @@ class EventController extends ApiController
         ->where("nombre",$proyecto_nombre);})->with('project')->get();
      
         //return $this->showAll($agendas);
-         var_dump($agendas);
+      //   var_dump($agendas);
         return response()->json(['data'=>$agendas],200);
     }
 
