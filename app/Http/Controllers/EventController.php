@@ -145,14 +145,13 @@ class EventController extends ApiController
     foreach ($events as $evento) {
      /* $fechar= new Carbon($evento->fecharegistro,"UTC");
       $evento->fecharegistro = $fechar->setTimezone($request->zona_horaria)->toDateTimeString();*/
-      
-      $ini = new Carbon($evento->inicio,"UTC");
+    $ini = new Carbon($evento->inicio,"UTC");
       //$fini = $ini->add('days',1);
-      $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
-      $fin = new Carbon($evento->fin,"UTC");
-      $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
-      $recordatorio = new Carbon($evento->recordatorio,"UTC");
-      $evento->recordatorio =$recordatorio->setTimezone($request->zona_horaria)->toDateTimeString();
+    $evento->inicio = $ini->setTimezone($request->zona_horaria)->toDateTimeString();
+    $fin = new Carbon($evento->fin,"UTC");
+    $evento->fin = $fin->setTimezone($request->zona_horaria)->toDateTimeString();
+    $recordatorio = new Carbon($evento->recordatorio,"UTC");
+    $evento->recordatorio =$recordatorio->setTimezone($request->zona_horaria)->toDateTimeString();
     }
     $resource = new EventCollection($events);
     //var_dump($eventos);
